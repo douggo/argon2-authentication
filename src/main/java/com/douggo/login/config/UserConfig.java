@@ -15,18 +15,8 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfig {
 
     @Bean
-    PasswordEncryptionGatewayArgon2 createPasswordEncryptionGatewayArgon2() {
-        return new PasswordEncryptionGatewayArgon2();
-    }
-
-    @Bean
     UserMapper createUserMapper() {
         return new UserMapper();
-    }
-
-    @Bean
-    PasswordMapper createPasswordMapper(PasswordEncryptionGatewayArgon2 passwordEncryptionGatewayArgon2) {
-        return new PasswordMapper(passwordEncryptionGatewayArgon2);
     }
 
     @Bean
@@ -35,7 +25,7 @@ public class UserConfig {
     }
 
     @Bean
-    UserGatewayJPA createUserUseCaseJPAImpl(UserRepository persistenceRepository, UserMapper mapper) {
+    UserGatewayJPA createUserGatewayJPA(UserRepository persistenceRepository, UserMapper mapper) {
         return new UserGatewayJPA(persistenceRepository, mapper);
     }
 

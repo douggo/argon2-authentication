@@ -10,15 +10,8 @@ import java.time.LocalDateTime;
 
 public class PasswordMapper {
 
-    private final PasswordEncryptionGateway passwordEncryptionGateway;
-
-    public PasswordMapper(PasswordEncryptionGateway passwordEncryptionGateway) {
-        this.passwordEncryptionGateway = passwordEncryptionGateway;
-    }
-
-    public Password toDomain(String plainPassword) {
-        final String hashedPassword = passwordEncryptionGateway.hashPassword(plainPassword);
-        return Password.of(hashedPassword, LocalDateTime.now(), true);
+    public Password toDomain(PasswordEntity password) {
+        return Password.of(password.getPassword(), password.getCreatedAt(), password.isActive());
     }
 
     public PasswordEntity toEntity(Password password, UserEntity user) {

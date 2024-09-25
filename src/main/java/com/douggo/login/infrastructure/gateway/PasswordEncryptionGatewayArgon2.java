@@ -6,7 +6,7 @@ public class PasswordEncryptionGatewayArgon2 implements PasswordEncryptionGatewa
 
     @Override
     public String hashPassword(String password) {
-        // implementation
+        // password hash must be done before the password reaches the controller
         return "";
     }
 
