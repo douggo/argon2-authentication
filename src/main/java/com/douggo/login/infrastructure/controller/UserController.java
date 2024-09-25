@@ -1,6 +1,9 @@
 package com.douggo.login.infrastructure.controller;
 
 import com.douggo.login.application.usecases.RegisterUserUseCase;
+import com.douggo.login.domain.entity.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +20,10 @@ public class UserController {
     }
 
     @PostMapping
-    public void registerUser(@RequestBody UserRequest userRequest) {
-        this.registerUserUseCase.execute(userRequest.toDomain());
+    public ResponseEntity<UserRequest> registerUser(@RequestBody UserRequest userRequest) {
+        User userCreated = this.registerUserUseCase.execute(userRequest.toDomain());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userRequest.fromDomain(userCreated));
     }
 
 }

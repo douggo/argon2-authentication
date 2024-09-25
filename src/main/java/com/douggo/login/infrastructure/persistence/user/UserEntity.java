@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -25,27 +26,38 @@ public class UserEntity {
 
     private LocalDate dateOfBirth;
 
+    private LocalDate createdAt;
+
+    private LocalDate updatedAt;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PasswordEntity> passwords = new ArrayList<>();
 
     public UserEntity() {}
 
-    public UserEntity(UUID id, String name, String email, LocalDate dateOfBirth, List<PasswordEntity> passwords) {
+    public UserEntity(
+            UUID id, String name, String email,
+            LocalDate dateOfBirth, LocalDate createdAt,
+            LocalDate updatedAt, List<PasswordEntity> passwords
+    ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.passwords = passwords;
     }
 
-    public UserEntity(String name, String email, LocalDate dateOfBirth) {
+    public UserEntity(UUID id, String name, String email, LocalDate dateOfBirth) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
     }
 
     public static UserEntity of(User user) {
-        return new UserEntity(user.getName(), user.getEmail(), user.getDateOfBirth());
+        return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getDateOfBirth());
     }
 
     public static UserEntity fromUserDomain(User user) {
@@ -60,7 +72,6 @@ public class UserEntity {
                 .dateOfBirth(user.getDateOfBirth())
                 .create();
     }
-
 
     public UUID getId() {
         return id;
@@ -92,5 +103,55 @@ public class UserEntity {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<PasswordEntity> getPasswords() {
+        return passwords;
+    }
+
+    public void setPasswords(List<PasswordEntity> passwords) {
+        this.passwords = passwords;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", passwords=" + passwords +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(passwords, that.passwords);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, dateOfBirth, createdAt, updatedAt, passwords);
     }
 }
