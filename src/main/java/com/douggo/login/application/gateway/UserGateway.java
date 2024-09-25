@@ -4,7 +4,7 @@ import com.douggo.login.domain.entity.User;
 
 import java.util.List;
 
-public interface UserUseCaseRepository {
+public interface UserGateway {
 
     List<User> listAll();
 

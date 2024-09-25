@@ -5,25 +5,26 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Embeddable
 public class PasswordPK implements Serializable {
 
-    private Long userId;
+    private UUID userId;
     private String password;
     private LocalDateTime createdAt;
 
-    public PasswordPK(Long userId, String password, LocalDateTime createdAt) {
+    public PasswordPK(UUID userId, String password, LocalDateTime createdAt) {
         this.userId = userId;
         this.password = password;
         this.createdAt = createdAt;
     }
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
