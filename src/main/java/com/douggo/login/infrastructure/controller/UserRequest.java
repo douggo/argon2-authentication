@@ -24,4 +24,8 @@ public record UserRequest(
         return new UserRequest(user.getName(), user.getEmail(), null, user.getDateOfBirth());
     }
 
+    public UserRequest fromRequestWithPassword(UserRequest userRequest, String encryptedPassword) {
+        return new UserRequest(userRequest.name(), userRequest.email(), encryptedPassword, userRequest.dateOfBirth());
+    }
+
 }

@@ -21,6 +21,7 @@ public class PasswordConfig {
         return new PasswordMapper();
     }
 
+    @Bean
     PasswordGatewayJPA createPasswordGatewayJPA(
             PasswordRepository repository,
             PasswordMapper passwordMapper,
