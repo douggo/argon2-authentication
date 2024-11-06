@@ -20,10 +20,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserRequest> registerUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequest userRequest) {
         User userCreated = this.registerUserUseCase.execute(userRequest.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userRequest.fromDomain(userCreated));
+                .body(UserResponseDTO.fromDomain(userCreated));
     }
 
 }

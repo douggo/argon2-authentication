@@ -8,8 +8,6 @@ import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordRepository;
 
-import java.util.Optional;
-
 public class PasswordGatewayJPA implements PasswordGateway {
 
     private final PasswordRepository repository;

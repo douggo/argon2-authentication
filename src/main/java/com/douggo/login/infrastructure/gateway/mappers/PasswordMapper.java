@@ -1,12 +1,9 @@
 package com.douggo.login.infrastructure.gateway.mappers;
 
-import com.douggo.login.application.gateway.PasswordEncryptionGateway;
 import com.douggo.login.domain.entity.Password;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordPK;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
-
-import java.time.LocalDateTime;
 
 public class PasswordMapper {
 

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,9 +27,9 @@ public class UserEntity {
 
     private LocalDate dateOfBirth;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PasswordEntity> passwords = new ArrayList<>();
@@ -37,8 +38,8 @@ public class UserEntity {
 
     public UserEntity(
             UUID id, String name, String email,
-            LocalDate dateOfBirth, LocalDate createdAt,
-            LocalDate updatedAt, List<PasswordEntity> passwords
+            LocalDate dateOfBirth, LocalDateTime createdAt,
+            LocalDateTime updatedAt, List<PasswordEntity> passwords
     ) {
         this.id = id;
         this.name = name;
@@ -105,19 +106,19 @@ public class UserEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDate getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDate updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

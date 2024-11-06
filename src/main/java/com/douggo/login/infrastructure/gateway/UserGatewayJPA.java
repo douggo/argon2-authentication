@@ -6,6 +6,7 @@ import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.infrastructure.persistence.user.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserGatewayJPA implements UserGateway {
@@ -25,7 +26,11 @@ public class UserGatewayJPA implements UserGateway {
 
     @Override
     public User register(User user) {
-        UserEntity userEntity = this.repository.save(this.mapper.toEntity(user));
+        LocalDateTime now = LocalDateTime.now();
+        UserEntity userEntity = this.mapper.toEntity(user);
+        userEntity.setCreatedAt(now);
+        userEntity.setUpdatedAt(now);
+        this.repository.save(userEntity);
         return this.mapper.toDomain(userEntity);
     }
 }
