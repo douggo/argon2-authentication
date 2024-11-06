@@ -14,6 +14,8 @@ public class PasswordPK implements Serializable {
     private String password;
     private LocalDateTime createdAt;
 
+    public PasswordPK() {}
+
     public PasswordPK(UUID userId, String password, LocalDateTime createdAt) {
         this.userId = userId;
         this.password = password;

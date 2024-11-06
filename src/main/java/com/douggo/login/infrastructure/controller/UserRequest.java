@@ -1,6 +1,7 @@
 package com.douggo.login.infrastructure.controller;
 
 import com.douggo.login.domain.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
@@ -8,7 +9,9 @@ public record UserRequest(
         String name,
         String email,
         String password,
-        LocalDate dateOfBirth
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        String dateOfBirth
 ) {
 
     public User toDomain() {
@@ -16,12 +19,12 @@ public record UserRequest(
                 .name(this.name)
                 .email(this.email)
                 .password(this.password)
-                .dateOfBirth(this.dateOfBirth)
+                .dateOfBirth(LocalDate.parse(this.dateOfBirth))
                 .create();
     }
 
     public UserRequest fromDomain(User user) {
-        return new UserRequest(user.getName(), user.getEmail(), null, user.getDateOfBirth());
+        return new UserRequest(user.getName(), user.getEmail(), null, user.getDateOfBirth().toString());
     }
 
     public UserRequest fromRequestWithPassword(UserRequest userRequest, String encryptedPassword) {

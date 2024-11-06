@@ -4,6 +4,6 @@ public interface PasswordEncryptionGateway {
 
     String hashPassword(String password);
 
-    boolean verifyPassword(String hashedPassword, String password);
+    boolean isPasswordValid(String hashedPassword, String password);
 
 }
