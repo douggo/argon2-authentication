@@ -8,6 +8,7 @@ import com.douggo.login.infrastructure.persistence.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class UserGatewayJPA implements UserGateway {
 
@@ -20,8 +21,11 @@ public class UserGatewayJPA implements UserGateway {
     }
 
     @Override
-    public List<User> listAll() {
-        return List.of();
+    public Optional<List<User>> getAll() {
+        return Optional.of(this.repository.findAll()
+                .stream()
+                .map(this.mapper::toDomain)
+                .toList());
     }
 
     @Override
