@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.controller;
+package com.douggo.login.infrastructure.controller.user;
 
 import com.douggo.login.domain.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;

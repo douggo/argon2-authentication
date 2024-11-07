@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public interface UserGateway {
 
-    Optional<List<User>> getAll();
+    List<User> getAll();
+
+    User getUserByEmail(String email) throws IllegalAccessException;
 
     User register(User user);
 

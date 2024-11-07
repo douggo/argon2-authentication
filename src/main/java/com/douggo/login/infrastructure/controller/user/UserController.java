@@ -1,5 +1,6 @@
-package com.douggo.login.infrastructure.controller;
+package com.douggo.login.infrastructure.controller.user;
 
+import com.douggo.login.application.dto.UserResponseDto;
 import com.douggo.login.application.usecases.ListAllUsersUseCase;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 import com.douggo.login.domain.entity.User;
@@ -22,17 +23,17 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequest userRequest) {
         User userCreated = this.registerUserUseCase.execute(userRequest.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(UserResponseDTO.fromDomain(userCreated));
+                .body(UserResponseDto.fromDomain(userCreated));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserResponseDTO>> getAll() {
-        List<UserResponseDTO> list = this.listAllUsersUseCase.execute()
+    public ResponseEntity<List<UserResponseDto>> getAll() {
+        List<UserResponseDto> list = this.listAllUsersUseCase.execute()
                 .stream()
-                .map(UserResponseDTO::fromDomain)
+                .map(UserResponseDto::fromDomain)
                 .toList();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(list);

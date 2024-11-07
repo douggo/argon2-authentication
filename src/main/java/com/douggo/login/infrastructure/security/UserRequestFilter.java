@@ -1,6 +1,6 @@
 package com.douggo.login.infrastructure.security;
 
-import com.douggo.login.infrastructure.controller.UserRequest;
+import com.douggo.login.infrastructure.controller.user.UserRequest;
 import com.douggo.login.infrastructure.gateway.PasswordEncryptionGatewayArgon2;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

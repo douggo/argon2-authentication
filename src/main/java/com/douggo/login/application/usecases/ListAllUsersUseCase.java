@@ -15,7 +15,7 @@ public class ListAllUsersUseCase {
     }
 
     public List<User> execute() {
-        return this.userGateway.getAll().orElse(Collections.emptyList());
+        return this.userGateway.getAll();
     }
 
 }

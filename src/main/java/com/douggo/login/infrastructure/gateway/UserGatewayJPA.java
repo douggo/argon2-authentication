@@ -5,6 +5,7 @@ import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.infrastructure.persistence.user.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,11 +22,20 @@ public class UserGatewayJPA implements UserGateway {
     }
 
     @Override
-    public Optional<List<User>> getAll() {
-        return Optional.of(this.repository.findAll()
+    public List<User> getAll() {
+        return this.repository.findAll()
                 .stream()
                 .map(this.mapper::toDomain)
-                .toList());
+                .toList();
+    }
+
+    @Override
+    public User getUserByEmail(String email) throws IllegalAccessException {
+        Optional<UserEntity> user = this.repository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new IllegalAccessException("An error occured while validating user's data");
+        }
+        return this.mapper.toDomain(user.get());
     }
 
     @Override
@@ -34,7 +44,11 @@ public class UserGatewayJPA implements UserGateway {
         UserEntity userEntity = this.mapper.toEntity(user);
         userEntity.setCreatedAt(now);
         userEntity.setUpdatedAt(now);
-        this.repository.save(userEntity);
+        try {
+            this.repository.save(userEntity);
+        } catch(DataIntegrityViolationException ex) {
+            throw new IllegalArgumentException("Address already in use!");
+        }
         return this.mapper.toDomain(userEntity);
     }
 }
