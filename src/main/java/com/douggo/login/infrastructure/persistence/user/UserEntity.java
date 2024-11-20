@@ -1,7 +1,9 @@
 package com.douggo.login.infrastructure.persistence.user;
 
 import com.douggo.login.domain.entity.User;
+import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
+import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,12 +37,19 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PasswordEntity> passwords = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserScopeEntity> scopes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AuthorizationTokenEntity> authorizationTokens = new ArrayList<>();
+
     public UserEntity() {}
 
     public UserEntity(
             UUID id, String name, String email,
             LocalDate dateOfBirth, LocalDateTime createdAt,
-            LocalDateTime updatedAt, List<PasswordEntity> passwords
+            LocalDateTime updatedAt, List<PasswordEntity> passwords,
+            List<UserScopeEntity> scopes, List<AuthorizationTokenEntity> authorizationTokens
     ) {
         this.id = id;
         this.name = name;
@@ -49,6 +58,8 @@ public class UserEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.passwords = passwords;
+        this.scopes = scopes;
+        this.authorizationTokens = authorizationTokens;
     }
 
     public UserEntity(UUID id, String name, String email, LocalDate dateOfBirth) {
@@ -129,6 +140,22 @@ public class UserEntity {
 
     public void setPasswords(List<PasswordEntity> passwords) {
         this.passwords = passwords;
+    }
+
+    public List<UserScopeEntity> getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(List<UserScopeEntity> scopes) {
+        this.scopes = scopes;
+    }
+
+    public List<AuthorizationTokenEntity> getAuthorizationTokens() {
+        return authorizationTokens;
+    }
+
+    public void setAuthorizationTokens(List<AuthorizationTokenEntity> authorizationTokens) {
+        this.authorizationTokens = authorizationTokens;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.douggo.login.application.dto;
 
+import com.douggo.login.domain.entity.AuthorizationToken;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -14,8 +16,8 @@ public class AuthSuccessDto {
         this.timeToExpire = timeToExpire;
     }
 
-    public static AuthSuccessDto of(UUID token, LocalDateTime timeToExpire) {
-        return new AuthSuccessDto(token, timeToExpire);
+    public static AuthSuccessDto of(AuthorizationToken token) {
+        return new AuthSuccessDto(token.getId(), token.getExpiredAt());
     }
 
     public UUID getToken() {

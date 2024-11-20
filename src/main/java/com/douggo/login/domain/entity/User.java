@@ -11,14 +11,15 @@ public class User {
     private final String email;
     private final LocalDate dateOfBirth;
     private final List<Password> passwords;
+    private final List<Scope> scopes;
 
-    private User(UUID id, String name, String email, LocalDate dateOfBirth, List<Password> passwords) {
-        Validator.validateData(name, email, dateOfBirth);
+    private User(UUID id, String name, String email, LocalDate dateOfBirth, List<Password> passwords, List<Scope> scopes) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.passwords = passwords;
+        this.scopes = scopes;
     }
 
     public UUID getId() {
@@ -41,18 +42,19 @@ public class User {
         return Collections.unmodifiableList(this.passwords);
     }
 
-    public void addNewPassword(String hashedPassword) {
-        this.passwords.forEach(Password::inactivate);
-        this.passwords.add(Password.of(hashedPassword, LocalDateTime.now(), true));
+    public List<Scope> getScopes() {
+        return Collections.unmodifiableList(this.scopes);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", passwords=" + passwords +
+                ", scopes=" + scopes +
                 '}';
     }
 
@@ -61,12 +63,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(passwords, user.passwords);
+        return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(passwords, user.passwords) && Objects.equals(scopes, user.scopes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, dateOfBirth, passwords);
+        return Objects.hash(id, name, email, dateOfBirth, passwords, scopes);
     }
 
     public static class Builder {
@@ -75,7 +77,8 @@ public class User {
         private String name;
         private String email;
         private LocalDate dateOfBirth;
-        private List<Password> passwords = new ArrayList<>();
+        private final List<Password> passwords = new ArrayList<>();
+        private final List<Scope> scopes = new ArrayList<>();
 
         public Builder id(UUID id) {
             this.id = id;
@@ -109,8 +112,37 @@ public class User {
             return this;
         }
 
+        public Builder scopes(Scope scope) {
+            this.scopes.add(scope);
+            return this;
+        }
+
+        public Builder scopes(List<Scope> scopes) {
+            scopes.forEach(this::scopes);
+            return this;
+        }
+
         public User create() {
-            return new User(this.id, this.name, this.email, this.dateOfBirth, this.passwords);
+            Validator.validateData(name, email, dateOfBirth);
+            return new User(
+                    this.id,
+                    this.name,
+                    this.email,
+                    this.dateOfBirth,
+                    this.passwords,
+                    this.scopes
+            );
+        }
+
+        public User createWithoutValidation() {
+            return new User(
+                    this.id,
+                    this.name,
+                    this.email,
+                    this.dateOfBirth,
+                    this.passwords,
+                    this.scopes
+            );
         }
 
     }
