@@ -4,6 +4,7 @@ import com.douggo.login.application.dto.UserResponseDto;
 import com.douggo.login.application.usecases.ListAllUsersUseCase;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 import com.douggo.login.domain.entity.User;
+import com.douggo.login.infrastructure.security.annotations.RequiredScopes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
+    @RequiredScopes(ignoreValidation = false)
     public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequest userRequest) {
         User userCreated = this.registerUserUseCase.execute(userRequest.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -30,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
+    @RequiredScopes({"users.suite", "users.readonly"})
     public ResponseEntity<List<UserResponseDto>> getAll() {
         List<UserResponseDto> list = this.listAllUsersUseCase.execute()
                 .stream()

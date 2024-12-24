@@ -1,43 +1,31 @@
 package com.douggo.login.infrastructure.gateway;
 
 import com.douggo.login.application.gateway.AuthorizationTokenScopeGateway;
-import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenRepository;
+import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeEntity;
 import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public class AuthorizationTokenScopeGatewayJPA implements AuthorizationTokenScopeGateway {
 
     private final AuthorizationTokenScopeRepository repository;
-    private final AuthorizationTokenRepository tokenRepository;
 
-    public AuthorizationTokenScopeGatewayJPA(
-            AuthorizationTokenScopeRepository repository,
-            AuthorizationTokenRepository tokenRepository
-    ) {
+    public AuthorizationTokenScopeGatewayJPA(AuthorizationTokenScopeRepository repository) {
         this.repository = repository;
-        this.tokenRepository = tokenRepository;
     }
 
     @Override
-    public UserDetails convertIntoUserDetails(UUID token) throws IllegalArgumentException {
-        String userId = this.tokenRepository.findById(token)
-                .orElseThrow(() -> new IllegalArgumentException("Token doesn't exists!"))
-                .getUser()
-                .getId()
-                .toString();
-
-        List<SimpleGrantedAuthority> authorities = this.repository.findById_TokenId(token)
-                .orElseThrow(() -> new IllegalArgumentException("Token doesn't have scopes associated with!"))
-                .stream()
-                .map(authorizationTokenScopeEntity ->
-                        new SimpleGrantedAuthority(authorizationTokenScopeEntity.getScope()
-                                .getName()))
-                .toList();
-
-        return new org.springframework.security.core.userdetails.User(userId, "", authorities);
+    public boolean doesTokenHasAnyRequiredScope(String token, String[] requiredScopes) {
+        List<AuthorizationTokenScopeEntity> tokenScopes = this.repository.findById_TokenId(UUID.fromString(token))
+                .orElseThrow(() -> new IllegalArgumentException("Token doesn't have any scopes associated with!"));
+        return Arrays.stream(requiredScopes)
+                .anyMatch(requiredScope -> tokenScopes.stream()
+                        .anyMatch(tokenScope -> tokenScope.getScope()
+                                .getName()
+                                .equalsIgnoreCase(requiredScope)
+                        )
+                );
     }
 }

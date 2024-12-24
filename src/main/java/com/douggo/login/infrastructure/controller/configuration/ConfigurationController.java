@@ -6,6 +6,7 @@ import com.douggo.login.application.usecases.CreateScopeUseCase;
 import com.douggo.login.application.usecases.ListAllScopesUseCase;
 import com.douggo.login.application.usecases.ListAllUserScopesUseCase;
 import com.douggo.login.domain.entity.Scope;
+import com.douggo.login.infrastructure.security.annotations.RequiredScopes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class ConfigurationController {
     }
 
     @PostMapping("/scope")
+    @RequiredScopes("users.suite")
     public ResponseEntity<ScopeCreatedDto> createScopes(@RequestBody ScopeRequestDto scopeRequestDto) {
         Scope scopeCreated = this.createScopeUseCase.execute(scopeRequestDto.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -42,6 +44,7 @@ public class ConfigurationController {
     }
 
     @GetMapping("/scope/all")
+    @RequiredScopes({"users.suite", "users.readonly"})
     public ResponseEntity<List<ScopeCreatedDto>> getAllScopes() {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.listAllScopesUseCase.execute()
@@ -52,6 +55,7 @@ public class ConfigurationController {
     }
 
     @PostMapping("/user-scope/{userId}")
+    @RequiredScopes("users.suite")
     public ResponseEntity<UserScopeCreated> bindScopeIntoUser(
             @PathVariable("userId") UUID userId,
             @RequestBody UserScopeRequestDto userScopeRequestDto
@@ -61,6 +65,7 @@ public class ConfigurationController {
     }
 
     @GetMapping("/user-scope/{userId}")
+    @RequiredScopes({"users.suite", "users.readonly"})
     public  ResponseEntity<UserScopeList> getAllScopesFromUser(@PathVariable("userId") UUID userId) throws IllegalAccessException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(UserScopeList.of(this.listAllUserScopesUseCase.execute(userId)));

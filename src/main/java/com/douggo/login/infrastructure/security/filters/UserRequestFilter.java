@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.security;
+package com.douggo.login.infrastructure.security.filters;
 
 import com.douggo.login.infrastructure.controller.user.UserRequest;
 import com.douggo.login.infrastructure.gateway.PasswordEncryptionGatewayArgon2;

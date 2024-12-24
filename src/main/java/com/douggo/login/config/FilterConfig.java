@@ -1,6 +1,6 @@
 package com.douggo.login.config;
 
-import com.douggo.login.infrastructure.security.UserRequestFilter;
+import com.douggo.login.infrastructure.security.filters.UserRequestFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

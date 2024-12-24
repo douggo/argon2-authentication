@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.security;
+package com.douggo.login.infrastructure.security.filters;
 
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
