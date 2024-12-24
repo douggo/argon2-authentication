@@ -1,5 +1,8 @@
 package com.douggo.login.domain.entity;
 
+import com.douggo.login.domain.exceptions.ScopeIdNotInformedException;
+import com.douggo.login.domain.exceptions.ScopeNameNotInformedException;
+
 import java.util.Objects;
 
 public class Scope {
@@ -73,14 +76,14 @@ public class Scope {
             if (id > 0) {
                 return;
             }
-            throw new IllegalArgumentException("ID must be informed!");
+            throw new ScopeIdNotInformedException("ID must be informed!");
         }
 
         private static void validateName(String name) throws IllegalAccessException {
             if (!Objects.isNull(name)) {
                 return;
             }
-            throw new IllegalArgumentException("Scope must have a name!");
+            throw new ScopeNameNotInformedException("Scope must have a name!");
         }
 
     }

@@ -1,5 +1,9 @@
 package com.douggo.login.domain.entity;
 
+import com.douggo.login.domain.exceptions.UserDateOfBirthNotInformedProperlyException;
+import com.douggo.login.domain.exceptions.UserEmailNotInformedProperlyException;
+import com.douggo.login.domain.exceptions.UserNameNotInformedException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -159,21 +163,21 @@ public class User {
             if (!Objects.isNull(name) && name.matches("^[A-Z][a-zA-Z\\s]*$")) {
                 return;
             }
-            throw new IllegalArgumentException("Name must be informed and must not contain special characters!");
+            throw new UserNameNotInformedException("Name must be informed and must not contain special characters!");
         }
 
         private static void validateEmail(String email) throws IllegalArgumentException {
             if (!Objects.isNull(email) && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
                 return;
             }
-            throw new IllegalArgumentException("Something is wrong with the e-mail - check again!");
+            throw new UserEmailNotInformedProperlyException("Something is wrong with the e-mail - check again!");
         }
 
         private static void validateDateOfBirth(LocalDate dateOfBirth) throws IllegalArgumentException {
             if (!Objects.isNull(dateOfBirth)) {
                 return;
             }
-            throw new IllegalArgumentException("Date of Birth must be informed!");
+            throw new UserDateOfBirthNotInformedProperlyException("Date of Birth must be informed!");
         }
 
     }

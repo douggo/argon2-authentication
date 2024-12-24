@@ -10,7 +10,7 @@ import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationToken
 import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeRepository;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
+import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +38,7 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
     @Override
     public AuthorizationToken generateAuthorizationToken(User user) {
         List<UserScopeEntity> userScopes = this.userScopeRepository.findById_UserId(user.getId())
-                .orElseThrow(() -> new EmptyResultDataAccessException("User doesn't have any scopes associated!", 0));
+                .orElseThrow(() -> new DataNotFoundException("User doesn't have any scopes associated!"));
         LocalDateTime now = LocalDateTime.now();
         AuthorizationTokenEntity tokenCreated = this.repository.save(
                 this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), user, now, now.plusMinutes(5)))
@@ -51,7 +51,7 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
     @Override
     public boolean isTokenExpired(String token) {
         AuthorizationTokenEntity tokenEntity = this.repository.findById(UUID.fromString(token))
-                .orElseThrow(() -> new IllegalArgumentException("Token doesn't exists!"));
+                .orElseThrow(() -> new DataNotFoundException("Token doesn't exists!"));
         return tokenEntity.getExpiredAt().isBefore(LocalDateTime.now());
     }
 

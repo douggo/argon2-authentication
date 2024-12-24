@@ -1,5 +1,8 @@
 package com.douggo.login.domain.entity;
 
+import com.douggo.login.domain.exceptions.PasswordCreateDateNotInformedException;
+import com.douggo.login.domain.exceptions.PasswordNotHashedProperlyException;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -69,14 +72,14 @@ public class Password {
             if (!Objects.isNull(password) && password.matches(regexArgon2)) {
                 return;
             }
-            throw new IllegalArgumentException("Password isn't hashed properly!");
+            throw new PasswordNotHashedProperlyException("Password isn't hashed properly!");
         }
 
         private static void validateCreatedAt(LocalDateTime createdAt) throws IllegalArgumentException {
             if (!Objects.isNull(createdAt)) {
                 return;
             }
-            throw new IllegalArgumentException("Creation date must be informed!");
+            throw new PasswordCreateDateNotInformedException("Creation date must be informed!");
         }
 
     }

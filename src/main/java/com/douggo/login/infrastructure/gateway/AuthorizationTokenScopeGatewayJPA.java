@@ -3,6 +3,7 @@ package com.douggo.login.infrastructure.gateway;
 import com.douggo.login.application.gateway.AuthorizationTokenScopeGateway;
 import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeEntity;
 import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeRepository;
+import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class AuthorizationTokenScopeGatewayJPA implements AuthorizationTokenScop
     @Override
     public boolean doesTokenHasAnyRequiredScope(String token, String[] requiredScopes) {
         List<AuthorizationTokenScopeEntity> tokenScopes = this.repository.findById_TokenId(UUID.fromString(token))
-                .orElseThrow(() -> new IllegalArgumentException("Token doesn't have any scopes associated with!"));
+                .orElseThrow(() -> new DataNotFoundException("Token doesn't have any scopes associated with!"));
         return Arrays.stream(requiredScopes)
                 .anyMatch(requiredScope -> tokenScopes.stream()
                         .anyMatch(tokenScope -> tokenScope.getScope()

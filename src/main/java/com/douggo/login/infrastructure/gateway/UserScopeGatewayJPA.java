@@ -6,6 +6,7 @@ import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.gateway.mappers.UserScopeMapper;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeRepository;
+import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class UserScopeGatewayJPA implements UserScopeGateway {
     @Override
     public User getAllScopesFromUser(UUID userId) throws IllegalAccessException {
         List<UserScopeEntity> userScopes = this.repository.findById_UserId(userId)
-                .orElseThrow(() -> new IllegalAccessException("User doesn't have scopes"));
+                .orElseThrow(() -> new DataNotFoundException("User doesn't have scopes"));
         List<Scope> scopes = userScopes
                 .stream()
                 .map(userScope -> Scope.of(userScope.getId().getScopeId(), userScope.getScope().getName()))
