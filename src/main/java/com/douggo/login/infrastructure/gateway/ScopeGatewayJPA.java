@@ -3,7 +3,6 @@ package com.douggo.login.infrastructure.gateway;
 import com.douggo.login.application.gateway.ScopeGateway;
 import com.douggo.login.domain.entity.Scope;
 import com.douggo.login.infrastructure.gateway.mappers.ScopeMapper;
-import com.douggo.login.infrastructure.persistence.scope.ScopeEntity;
 import com.douggo.login.infrastructure.persistence.scope.ScopeRepository;
 
 import java.util.List;

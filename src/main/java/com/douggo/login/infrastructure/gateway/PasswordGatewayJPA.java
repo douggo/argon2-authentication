@@ -9,7 +9,6 @@ import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class PasswordGatewayJPA implements PasswordGateway {
@@ -32,11 +31,9 @@ public class PasswordGatewayJPA implements PasswordGateway {
 
     @Override
     public Password getUserPassword(UUID userId) throws IllegalAccessException {
-        Optional<List<PasswordEntity>> passwords = this.repository.findById_UserId(userId);
-        if (passwords.isEmpty()) {
-            throw new IllegalAccessException("An error occured while validating user's data");
-        }
-        return passwords.get()
+        List<PasswordEntity> passwords = this.repository.findById_UserId(userId)
+                .orElseThrow(() -> new IllegalAccessException("An error occured while validating user's data"));
+        return passwords
                 .stream()
                 .filter(PasswordEntity::isActive)
                 .map(PasswordEntity::toDomain)

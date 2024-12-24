@@ -9,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public class UserGatewayJPA implements UserGateway {
 
@@ -31,11 +30,9 @@ public class UserGatewayJPA implements UserGateway {
 
     @Override
     public User getUserByEmail(String email) throws IllegalAccessException {
-        Optional<UserEntity> user = this.repository.findByEmail(email);
-        if (user.isEmpty()) {
-            throw new IllegalAccessException("An error occured while validating user's data");
-        }
-        return this.mapper.toDomain(user.get());
+        UserEntity user = this.repository.findByEmail(email)
+                .orElseThrow(() -> new IllegalAccessException("An error occured while validating user's data"));
+        return this.mapper.toDomain(user);
     }
 
     @Override

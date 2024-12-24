@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public class AuthorizationTokenScopeGatewayJPA implements AuthorizationTokenScopeGateway {
 
-    private AuthorizationTokenScopeRepository repository;
-    private AuthorizationTokenRepository tokenRepository;
+    private final AuthorizationTokenScopeRepository repository;
+    private final AuthorizationTokenRepository tokenRepository;
 
     public AuthorizationTokenScopeGatewayJPA(
             AuthorizationTokenScopeRepository repository,
@@ -33,8 +33,9 @@ public class AuthorizationTokenScopeGatewayJPA implements AuthorizationTokenScop
         List<SimpleGrantedAuthority> authorities = this.repository.findById_TokenId(token)
                 .orElseThrow(() -> new IllegalArgumentException("Token doesn't have scopes associated with!"))
                 .stream()
-                .map(authorizationTokenScopeEntity -> new SimpleGrantedAuthority(authorizationTokenScopeEntity.getScope()
-                        .getName()))
+                .map(authorizationTokenScopeEntity ->
+                        new SimpleGrantedAuthority(authorizationTokenScopeEntity.getScope()
+                                .getName()))
                 .toList();
 
         return new org.springframework.security.core.userdetails.User(userId, "", authorities);

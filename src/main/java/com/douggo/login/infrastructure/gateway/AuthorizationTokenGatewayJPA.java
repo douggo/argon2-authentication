@@ -14,7 +14,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
@@ -38,17 +37,13 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
 
     @Override
     public AuthorizationToken generateAuthorizationToken(User user) {
-        Optional<List<UserScopeEntity>> userScopes = this.userScopeRepository.findById_UserId(user.getId());
-
-        if (userScopes.isEmpty()) {
-            throw new EmptyResultDataAccessException("User doesn't have any scopes associated!", 0);
-        }
-
+        List<UserScopeEntity> userScopes = this.userScopeRepository.findById_UserId(user.getId())
+                .orElseThrow(() -> new EmptyResultDataAccessException("User doesn't have any scopes associated!", 0));
         LocalDateTime now = LocalDateTime.now();
         AuthorizationTokenEntity tokenCreated = this.repository.save(
                 this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), user, now, now.plusMinutes(5)))
         );
-        this.authorizationTokenScopeRepository.saveAll(AuthorizationTokenScopeEntity.fromUserScopes(userScopes.get(), tokenCreated));
+        this.authorizationTokenScopeRepository.saveAll(AuthorizationTokenScopeEntity.fromUserScopes(userScopes, tokenCreated));
 
         return this.mapper.toDomain(tokenCreated);
     }
