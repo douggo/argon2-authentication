@@ -48,4 +48,11 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
         return this.mapper.toDomain(tokenCreated);
     }
 
+    @Override
+    public boolean isTokenExpired(String token) {
+        AuthorizationTokenEntity tokenEntity = this.repository.findById(UUID.fromString(token))
+                .orElseThrow(() -> new IllegalArgumentException("Token doesn't exists!"));
+        return tokenEntity.getExpiredAt().isBefore(LocalDateTime.now());
+    }
+
 }

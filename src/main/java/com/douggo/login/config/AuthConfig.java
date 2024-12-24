@@ -3,6 +3,7 @@ package com.douggo.login.config;
 import com.douggo.login.application.gateway.*;
 import com.douggo.login.application.usecases.*;
 import com.douggo.login.infrastructure.gateway.AuthorizationTokenGatewayJPA;
+import com.douggo.login.infrastructure.gateway.AuthorizationTokenScopeGatewayJPA;
 import com.douggo.login.infrastructure.gateway.ScopeGatewayJPA;
 import com.douggo.login.infrastructure.gateway.UserScopeGatewayJPA;
 import com.douggo.login.infrastructure.gateway.mappers.AuthorizationTokenMapper;
@@ -14,6 +15,7 @@ import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationToken
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 @Configuration
 public class AuthConfig {
 
@@ -55,6 +57,11 @@ public class AuthConfig {
     @Bean
     UserScopeGatewayJPA createUserScopeGatewayJPA(UserScopeRepository repository, UserScopeMapper mapper) {
         return new UserScopeGatewayJPA(repository, mapper);
+    }
+
+    @Bean
+    AuthorizationTokenScopeGatewayJPA createAuthorizationTokenScopeGatewayJPA(AuthorizationTokenScopeRepository repository) {
+        return new AuthorizationTokenScopeGatewayJPA(repository);
     }
 
     @Bean

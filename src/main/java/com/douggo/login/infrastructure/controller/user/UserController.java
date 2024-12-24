@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    @RequiredScopes(ignoreValidation = false)
+    @RequiredScopes(ignoreValidation = true)
     public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserRequest userRequest) {
         User userCreated = this.registerUserUseCase.execute(userRequest.toDomain());
         return ResponseEntity.status(HttpStatus.CREATED)

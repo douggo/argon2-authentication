@@ -7,4 +7,5 @@ public interface AuthorizationTokenGateway {
 
     AuthorizationToken generateAuthorizationToken(User user);
 
+    boolean isTokenExpired(String token);
 }

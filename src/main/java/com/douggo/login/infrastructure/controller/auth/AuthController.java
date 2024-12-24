@@ -21,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping
-    @RequiredScopes(ignoreValidation = false)
+    @RequiredScopes(ignoreValidation = true)
     public ResponseEntity<AuthSuccessDto> login(@RequestBody AuthDataDto authDataDto) throws IllegalAccessException {
         return ResponseEntity.status(201)
                 .body(this.processLoginUseCase.execute(authDataDto));
