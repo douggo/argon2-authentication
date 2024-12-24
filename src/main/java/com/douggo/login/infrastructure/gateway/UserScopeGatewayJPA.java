@@ -6,7 +6,6 @@ import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.gateway.mappers.UserScopeMapper;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeRepository;
-import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Optional;

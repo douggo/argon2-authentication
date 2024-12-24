@@ -66,5 +66,4 @@ public class ConfigurationController {
                 .body(UserScopeList.of(this.listAllUserScopesUseCase.execute(userId)));
     }
 
-
 }

@@ -52,4 +52,5 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
 
         return this.mapper.toDomain(tokenCreated);
     }
+
 }

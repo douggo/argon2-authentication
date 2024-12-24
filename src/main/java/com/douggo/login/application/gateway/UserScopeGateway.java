@@ -1,6 +1,5 @@
 package com.douggo.login.application.gateway;
 
-import com.douggo.login.domain.entity.Scope;
 import com.douggo.login.domain.entity.User;
 
 import java.util.UUID;
