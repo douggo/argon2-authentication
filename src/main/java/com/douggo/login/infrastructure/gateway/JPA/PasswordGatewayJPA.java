@@ -24,9 +24,9 @@ public class PasswordGatewayJPA implements PasswordGateway {
     }
 
     @Override
-    public void createPassword(User user, Password password) {
+    public Password createPassword(User user, Password password) {
         PasswordEntity passwordEntity = this.mapper.toEntity(password, this.userMapper.toEntity(user));
-        this.repository.save(passwordEntity);
+        return this.mapper.toDomain(this.repository.save(passwordEntity));
     }
 
     @Override

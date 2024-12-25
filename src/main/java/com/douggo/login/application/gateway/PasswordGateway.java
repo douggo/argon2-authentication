@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PasswordGateway {
 
-    void createPassword(User user, Password password);
+    Password createPassword(User user, Password password);
 
     Password getUserPassword(UUID userId) throws IllegalAccessException;
 }

@@ -8,6 +8,7 @@ import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class UserGatewayMemory implements UserGateway {
 
@@ -44,6 +45,7 @@ public class UserGatewayMemory implements UserGateway {
         UserEntity userEntity = this.mapper.toEntity(user);
         userEntity.setCreatedAt(now);
         userEntity.setUpdatedAt(now);
+        userEntity.setId(UUID.randomUUID());
         this.repository.add(userEntity);
         return this.mapper.toDomain(userEntity);
     }

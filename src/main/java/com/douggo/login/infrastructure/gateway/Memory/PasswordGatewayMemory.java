@@ -24,8 +24,10 @@ public class PasswordGatewayMemory implements PasswordGateway {
     }
 
     @Override
-    public void createPassword(User user, Password password) {
-        this.repository.add(this.passwordMapper.toEntity(password, this.userMapper.toEntity(user)));
+    public Password createPassword(User user, Password password) {
+        PasswordEntity passwordEntity = this.passwordMapper.toEntity(password, this.userMapper.toEntity(user));
+        this.repository.add(passwordEntity);
+        return this.passwordMapper.toDomain(passwordEntity);
     }
 
     @Override
