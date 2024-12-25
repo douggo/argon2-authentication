@@ -5,7 +5,7 @@ import com.douggo.login.application.gateway.UserGateway;
 import com.douggo.login.application.usecases.ListAllUsersUseCase;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
-import com.douggo.login.infrastructure.gateway.UserGatewayJPA;
+import com.douggo.login.infrastructure.gateway.JPA.UserGatewayJPA;
 import com.douggo.login.infrastructure.persistence.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

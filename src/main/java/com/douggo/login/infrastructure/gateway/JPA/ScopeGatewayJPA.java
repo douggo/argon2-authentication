@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.gateway;
+package com.douggo.login.infrastructure.gateway.JPA;
 
 import com.douggo.login.application.gateway.ScopeGateway;
 import com.douggo.login.domain.entity.Scope;

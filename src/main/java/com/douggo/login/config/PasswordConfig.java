@@ -1,7 +1,7 @@
 package com.douggo.login.config;
 
-import com.douggo.login.infrastructure.gateway.PasswordEncryptionGatewayArgon2;
-import com.douggo.login.infrastructure.gateway.PasswordGatewayJPA;
+import com.douggo.login.infrastructure.gateway.Argon2.PasswordEncryptionGatewayArgon2;
+import com.douggo.login.infrastructure.gateway.JPA.PasswordGatewayJPA;
 import com.douggo.login.infrastructure.gateway.mappers.PasswordMapper;
 import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.password.PasswordRepository;

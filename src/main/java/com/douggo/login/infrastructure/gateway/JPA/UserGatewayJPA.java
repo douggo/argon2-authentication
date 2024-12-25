@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.gateway;
+package com.douggo.login.infrastructure.gateway.JPA;
 
 import com.douggo.login.application.gateway.UserGateway;
 import com.douggo.login.domain.entity.User;
@@ -31,7 +31,7 @@ public class UserGatewayJPA implements UserGateway {
     @Override
     public User getUserByEmail(String email) throws IllegalAccessException {
         UserEntity user = this.repository.findByEmail(email)
-                .orElseThrow(() -> new IllegalAccessException("An error occured while validating user's data"));
+                .orElseThrow(() -> new IllegalAccessException("An error occurred while validating user's data"));
         return this.mapper.toDomain(user);
     }
 

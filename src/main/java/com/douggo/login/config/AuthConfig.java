@@ -2,10 +2,10 @@ package com.douggo.login.config;
 
 import com.douggo.login.application.gateway.*;
 import com.douggo.login.application.usecases.*;
-import com.douggo.login.infrastructure.gateway.AuthorizationTokenGatewayJPA;
-import com.douggo.login.infrastructure.gateway.AuthorizationTokenScopeGatewayJPA;
-import com.douggo.login.infrastructure.gateway.ScopeGatewayJPA;
-import com.douggo.login.infrastructure.gateway.UserScopeGatewayJPA;
+import com.douggo.login.infrastructure.gateway.JPA.AuthorizationTokenGatewayJPA;
+import com.douggo.login.infrastructure.gateway.JPA.AuthorizationTokenScopeGatewayJPA;
+import com.douggo.login.infrastructure.gateway.JPA.ScopeGatewayJPA;
+import com.douggo.login.infrastructure.gateway.JPA.UserScopeGatewayJPA;
 import com.douggo.login.infrastructure.gateway.mappers.AuthorizationTokenMapper;
 import com.douggo.login.infrastructure.gateway.mappers.ScopeMapper;
 import com.douggo.login.infrastructure.gateway.mappers.UserScopeMapper;

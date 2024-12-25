@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.gateway;
+package com.douggo.login.infrastructure.gateway.JPA;
 
 import com.douggo.login.application.gateway.PasswordGateway;
 import com.douggo.login.domain.entity.Password;
@@ -32,7 +32,7 @@ public class PasswordGatewayJPA implements PasswordGateway {
     @Override
     public Password getUserPassword(UUID userId) throws IllegalAccessException {
         List<PasswordEntity> passwords = this.repository.findById_UserId(userId)
-                .orElseThrow(() -> new IllegalAccessException("An error occured while validating user's data"));
+                .orElseThrow(() -> new IllegalAccessException("An error occurred while validating user's data"));
         return passwords
                 .stream()
                 .filter(PasswordEntity::isActive)

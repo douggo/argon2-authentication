@@ -1,7 +1,7 @@
 package com.douggo.login.infrastructure.security.filters;
 
 import com.douggo.login.infrastructure.controller.user.UserRequest;
-import com.douggo.login.infrastructure.gateway.PasswordEncryptionGatewayArgon2;
+import com.douggo.login.infrastructure.gateway.Argon2.PasswordEncryptionGatewayArgon2;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;

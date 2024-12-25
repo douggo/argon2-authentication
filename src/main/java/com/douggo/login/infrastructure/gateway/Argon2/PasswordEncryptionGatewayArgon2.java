@@ -1,4 +1,4 @@
-package com.douggo.login.infrastructure.gateway;
+package com.douggo.login.infrastructure.gateway.Argon2;
 
 import com.douggo.login.application.gateway.PasswordEncryptionGateway;
 import de.mkammerer.argon2.Argon2;
