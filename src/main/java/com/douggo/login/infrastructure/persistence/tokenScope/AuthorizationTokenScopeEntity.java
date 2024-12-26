@@ -16,12 +16,12 @@ public class AuthorizationTokenScopeEntity {
     @EmbeddedId
     private AuthorizationTokenScopePK id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("tokenId")
     @JoinColumn(name = "token_id", nullable = false)
     private AuthorizationTokenEntity token;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("scopeId")
     @JoinColumn(name = "scope_id", nullable = false)
     private ScopeEntity scope;

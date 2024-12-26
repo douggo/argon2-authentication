@@ -15,12 +15,12 @@ public class UserScopeEntity {
     @EmbeddedId
     private UserScopePK id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("scopeId")
     @JoinColumn(name = "scope_id", nullable = false)
     private ScopeEntity scope;

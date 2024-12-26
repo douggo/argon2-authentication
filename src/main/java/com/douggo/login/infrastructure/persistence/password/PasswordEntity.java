@@ -14,7 +14,7 @@ public class PasswordEntity {
     @EmbeddedId
     private PasswordPK id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
