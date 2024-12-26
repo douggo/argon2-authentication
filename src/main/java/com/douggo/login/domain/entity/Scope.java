@@ -12,15 +12,18 @@ public class Scope {
     private String name;
 
     private Scope(int id, String name) {
+        Validator.validateAll(id, name);
         this.id = id;
         this.name = name;
     }
 
     private Scope(int id) {
+        Validator.validateIdOnly(id);
         this.id = id;
     }
 
     private Scope(String name) {
+        Validator.validateNameOnly(name);
         this.name = name;
     }
 
@@ -67,19 +70,27 @@ public class Scope {
 
     public static class Validator {
 
-        public static void validate(int id, String name) throws IllegalAccessException {
+        public static void validateAll(int id, String name) {
             validateId(id);
             validateName(name);
         }
 
-        private static void validateId(int id) throws IllegalAccessException {
+        public static void validateIdOnly(int id) {
+            validateId(id);
+        }
+
+        public static void validateNameOnly(String name) {
+            validateName(name);
+        }
+
+        private static void validateId(int id) {
             if (id > 0) {
                 return;
             }
             throw new ScopeIdNotInformedException("ID must be informed!");
         }
 
-        private static void validateName(String name) throws IllegalAccessException {
+        private static void validateName(String name) {
             if (!Objects.isNull(name)) {
                 return;
             }
