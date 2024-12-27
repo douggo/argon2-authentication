@@ -5,6 +5,7 @@ import com.douggo.login.application.gateway.PasswordGateway;
 import com.douggo.login.application.gateway.UserGateway;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 import com.douggo.login.domain.entity.User;
+import com.douggo.login.domain.exceptions.ObjectIsNullException;
 import com.douggo.login.infrastructure.gateway.Argon2.PasswordEncryptionGatewayArgon2;
 import com.douggo.login.infrastructure.gateway.Memory.PasswordGatewayMemory;
 import com.douggo.login.infrastructure.gateway.Memory.UserGatewayMemory;
@@ -20,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RegisterUserUseCaseUnitTest {
+public class RegisterUserUseCaseTest {
 
     private UserGateway userGateway;
     private RegisterUserUseCase registerUserUseCase;
@@ -73,6 +75,14 @@ public class RegisterUserUseCaseUnitTest {
         assertEquals(
                 hashedPassword,
                 userCreated.getPasswords().getFirst().getPassword()
+        );
+    }
+
+    @Test
+    void shouldNotCreateIfUserIsNull() {
+        assertThrows(
+                ObjectIsNullException.class,
+                () -> this.registerUserUseCase.execute(null)
         );
     }
 

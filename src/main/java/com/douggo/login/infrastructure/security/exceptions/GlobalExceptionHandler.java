@@ -143,4 +143,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(400));
     }
 
+    @ExceptionHandler(ObjectIsNullException.class)
+    public ResponseEntity<ApiErrorResponse> handleObjectIsNullException(ObjectIsNullException exception) {
+        ApiErrorResponse response = new ApiErrorResponse(
+                exception.getClass().getSimpleName(),
+                exception.getStatusCode(),
+                exception.getMessage()
+        );
+        return new ResponseEntity<>(response, HttpStatus.valueOf(exception.getStatusCode()));
+    }
+
 }

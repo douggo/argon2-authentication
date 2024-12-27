@@ -5,7 +5,6 @@ import com.douggo.login.domain.entity.Scope;
 import com.douggo.login.infrastructure.gateway.mappers.ScopeMapper;
 import com.douggo.login.infrastructure.persistence.scope.ScopeEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScopeGatewayMemory implements ScopeGateway {
@@ -13,9 +12,9 @@ public class ScopeGatewayMemory implements ScopeGateway {
     private final ScopeMapper mapper;
     private final List<ScopeEntity> repository;
 
-    public ScopeGatewayMemory(ScopeMapper mapper) {
+    public ScopeGatewayMemory(ScopeMapper mapper, List<ScopeEntity> repository) {
         this.mapper = mapper;
-        this.repository = new ArrayList<>();
+        this.repository = repository;
     }
 
     @Override

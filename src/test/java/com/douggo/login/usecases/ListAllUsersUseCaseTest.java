@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ListAllUsersUseCaseUnitTest {
+public class ListAllUsersUseCaseTest {
 
     private List<UserEntity> userRepository;
     private ListAllUsersUseCase listAllUsersUseCase;
