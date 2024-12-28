@@ -53,6 +53,18 @@ docker run -d \
 postgres:16
 ```
 
+Ao subir o projeto, automaticamente um usuário admin é criado para consumir a API, juntamente com a criação dos escopos necessários para o consumo dos endpoints. Além disso o escopo 'users.suite' também já foi vinculado ao usuário.
+
+Os dados de login são:
+
+```bash
+email: "admin@mail.com.br"
+password: "admin@123"
+```
+
+Para mais informações, vá para o arquivo StartupConfigRunner, localizado em:
+```src/main/java/com.douggo.login/StartupConfigRunner.java ```
+
 ## Endpoints para consumo
 
 Nesta seção será apresentada todos os endpoints desenvolvidas para o usuário consumir.
@@ -76,7 +88,7 @@ curl --location 'http://localhost:8080/users/create' \
 curl --location 'http://localhost:8080/auth/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "email":"john.doe@mail.com.br",
+    "email": "john.doe@mail.com.br",
     "password": "p@ssw0rd-2024"
 }'
 ```

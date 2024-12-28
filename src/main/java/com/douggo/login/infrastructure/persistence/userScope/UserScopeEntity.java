@@ -20,7 +20,7 @@ public class UserScopeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("scopeId")
     @JoinColumn(name = "scope_id", nullable = false)
     private ScopeEntity scope;
