@@ -18,4 +18,5 @@ public class AuthDataDto {
     public String getPassword() {
         return password;
     }
+
 }

@@ -27,4 +27,12 @@ public class AuthSuccessDto {
     public LocalDateTime getTimeToExpire() {
         return timeToExpire;
     }
+
+    @Override
+    public String toString() {
+        return "AuthSuccessDto{" +
+                "token=" + token +
+                ", timeToExpire=" + timeToExpire +
+                '}';
+    }
 }

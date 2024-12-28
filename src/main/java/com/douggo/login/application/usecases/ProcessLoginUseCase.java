@@ -9,6 +9,7 @@ import com.douggo.login.application.gateway.UserGateway;
 import com.douggo.login.domain.entity.AuthorizationToken;
 import com.douggo.login.domain.entity.Password;
 import com.douggo.login.domain.entity.User;
+import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 
 public class ProcessLoginUseCase {
 
@@ -36,7 +37,12 @@ public class ProcessLoginUseCase {
     }
 
     private void validateData(AuthDataDto authDataDto) throws IllegalAccessException {
-        User user = this.userGateway.getUserByEmail(authDataDto.getEmail());
+        User user = null;
+        try {
+            user = this.userGateway.getUserByEmail(authDataDto.getEmail());
+        } catch(DataNotFoundException exception) {
+            throw new IllegalAccessException("An error occurred while validating user's data");
+        }
         Password password = this.passwordGateway.getUserPassword(user.getId());
         if (!this.passwordEncryptionGateway.isPasswordValid(password.getPassword(), authDataDto.getPassword())) {
             throw new IllegalAccessException("An error occurred while validating user's data");

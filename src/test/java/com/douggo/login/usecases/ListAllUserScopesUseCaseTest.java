@@ -1,27 +1,19 @@
 package com.douggo.login.usecases;
 
-import com.douggo.login.application.dto.AuthDataDto;
-import com.douggo.login.application.dto.AuthSuccessDto;
-import com.douggo.login.application.gateway.AuthorizationTokenGateway;
-import com.douggo.login.application.gateway.PasswordEncryptionGateway;
-import com.douggo.login.application.gateway.PasswordGateway;
-import com.douggo.login.application.gateway.UserGateway;
-import com.douggo.login.application.usecases.BindScopeToUserUseCase;
-import com.douggo.login.application.usecases.CreateScopeUseCase;
-import com.douggo.login.application.usecases.ProcessLoginUseCase;
-import com.douggo.login.application.usecases.RegisterUserUseCase;
+import com.douggo.login.application.gateway.*;
+import com.douggo.login.application.usecases.*;
 import com.douggo.login.domain.entity.Scope;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.gateway.Argon2.PasswordEncryptionGatewayArgon2;
-import com.douggo.login.infrastructure.gateway.Memory.*;
+import com.douggo.login.infrastructure.gateway.Memory.PasswordGatewayMemory;
+import com.douggo.login.infrastructure.gateway.Memory.ScopeGatewayMemory;
+import com.douggo.login.infrastructure.gateway.Memory.UserGatewayMemory;
+import com.douggo.login.infrastructure.gateway.Memory.UserScopeGatewayMemory;
 import com.douggo.login.infrastructure.gateway.mappers.*;
-import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.scope.ScopeEntity;
-import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeEntity;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
-import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,33 +23,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ProcessLoginUseCaseTest {
+public class ListAllUserScopesUseCaseTest {
 
     private final UserMapper userMapper = new UserMapper();
     private final PasswordMapper passwordMapper = new PasswordMapper();
-    private final AuthorizationTokenMapper authorizationTokenMapper = new AuthorizationTokenMapper();
 
     private List<UserEntity> userRepository;
     private List<PasswordEntity> passwordRepository;
     private List<ScopeEntity> scopeRepository;
     private List<UserScopeEntity> userScopeRepository;
-    private List<AuthorizationTokenEntity> tokenRepository;
-    private List<AuthorizationTokenScopeEntity> tokenScopeRepository;
 
     private UserGateway userGateway;
     private PasswordGateway passwordGateway;
     private PasswordEncryptionGateway passwordEncryptionGateway;
-    private AuthorizationTokenGateway authorizationTokenGateway;
+    private UserScopeGateway userScopeGateway;
 
-    private ProcessLoginUseCase processLoginUseCase;
+    private ListAllUserScopesUseCase listAllUserScopesUseCase;
 
     @BeforeEach
     public void setup() {
         this.registerUser();
         this.createScope();
         this.bindScopeToUser();
-        this.setupProcessLoginUseCase();
-
+        this.setupUseCase();
     }
 
     private void registerUser() {
@@ -86,8 +74,9 @@ public class ProcessLoginUseCaseTest {
 
     private void bindScopeToUser() {
         this.userScopeRepository = new ArrayList<>();
+        this.userScopeGateway = new UserScopeGatewayMemory(this.userScopeRepository, new UserScopeMapper());
         UserEntity userEntity = this.userRepository.getFirst();
-        new BindScopeToUserUseCase(new UserScopeGatewayMemory(userScopeRepository, new UserScopeMapper()))
+        new BindScopeToUserUseCase(this.userScopeGateway)
                 .execute(
                         new User.Builder()
                                 .id(userEntity.getId())
@@ -99,48 +88,25 @@ public class ProcessLoginUseCaseTest {
                 );
     }
 
-    private void setupProcessLoginUseCase() {
-        this.tokenRepository = new ArrayList<>();
-        this.tokenScopeRepository = new ArrayList<>();
-        this.authorizationTokenGateway = new AuthorizationTokenGatewayMemory(
-                this.tokenRepository,
-                this.userScopeRepository,
-                this.tokenScopeRepository,
-                this.authorizationTokenMapper
-
-        );
-        this.processLoginUseCase = new ProcessLoginUseCase(
-                this.userGateway,
-                this.passwordGateway,
-                this.passwordEncryptionGateway,
-                this.authorizationTokenGateway
-        );
+    private void setupUseCase() {
+        this.listAllUserScopesUseCase = new ListAllUserScopesUseCase(this.userScopeGateway);
     }
 
     @Test
-    void ShouldProcessLoginIfDataIsCorrect() {
-        AtomicReference<AuthSuccessDto> success = new AtomicReference<>();
+    void shouldListAllScopesFromUser() {
+        AtomicReference<User> success = new AtomicReference<>();
         success.set(null);
-        Assertions.assertDoesNotThrow(
-                () -> success.set(this.processLoginUseCase.execute(new AuthDataDto("john.doe@mail.com.br", "123")))
-        );
+        Assertions.assertDoesNotThrow(() -> success.set(this.listAllUserScopesUseCase.execute(this.userRepository.getFirst().getId())));
         Assertions.assertNotEquals(null, success.get());
+        Assertions.assertEquals(1, success.get().getScopes().size());
     }
 
     @Test
-    void shouldThrowExceptionIfPasswordIsWrong() {
-        Assertions.assertThrows(
-                IllegalAccessException.class,
-                () -> this.processLoginUseCase.execute(new AuthDataDto("john.doe@mail.com.br", "321"))
-        );
-    }
-
-    @Test
-    void shouldThrowExceptionIfEmailDoesNotExists() {
-        Assertions.assertThrows(
-                IllegalAccessException.class,
-                () -> this.processLoginUseCase.execute(new AuthDataDto("john@mail.com.br", "123"))
-        );
+    void shouldListEmptyIfNoScopesAreFound() {
+        this.userScopeRepository.clear();
+        AtomicReference<User> success = new AtomicReference<>();
+        Assertions.assertDoesNotThrow(() -> success.set(this.listAllUserScopesUseCase.execute(this.userRepository.getFirst().getId())));
+        Assertions.assertEquals(0, success.get().getScopes().size());
     }
 
 }
