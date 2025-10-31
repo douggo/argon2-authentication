@@ -6,10 +6,14 @@ public class ApiErrorResponse {
     private final int status;
     private final String message;
 
-    public ApiErrorResponse(String exceptionName, int status, String message) {
+    private ApiErrorResponse(String exceptionName, int status, String message) {
         this.exceptionName = exceptionName;
         this.status = status;
         this.message = message;
+    }
+
+    public static ApiErrorResponse of(String exceptionName, int status, String message) {
+        return new ApiErrorResponse(exceptionName, status, message);
     }
 
     public String getExceptionName() {
