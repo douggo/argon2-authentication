@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import dto.AuthDataDto;
 import dto.AuthSuccessDto;
@@ -20,13 +20,17 @@ import persistence.scope.ScopeEntity;
 import persistence.tokenScope.AuthorizationTokenScopeEntity;
 import persistence.user.UserEntity;
 import persistence.userScope.UserScopeEntity;
+import usecases.BindScopeToUserUseCase;
+import usecases.CreateScopeUseCase;
+import usecases.ProcessLoginUseCase;
+import usecases.RegisterUserUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ProcessLoginUseCaseTest {
+public class ProcessLoginUseCaseIntegrationTest {
 
     private final UserMapper userMapper = new UserMapper();
     private final PasswordMapper passwordMapper = new PasswordMapper();

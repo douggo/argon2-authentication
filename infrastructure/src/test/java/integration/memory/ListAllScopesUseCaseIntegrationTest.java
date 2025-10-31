@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import entity.Scope;
 import gateway.Memory.ScopeGatewayMemory;
@@ -8,12 +8,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.scope.ScopeEntity;
+import usecases.ListAllScopesUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ListAllScopesUseCaseTest {
+public class ListAllScopesUseCaseIntegrationTest {
 
     private ListAllScopesUseCase listAllScopesUseCase;
     private List<ScopeEntity> repository;

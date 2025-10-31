@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import entity.Scope;
 import entity.User;
@@ -18,13 +18,16 @@ import persistence.password.PasswordEntity;
 import persistence.scope.ScopeEntity;
 import persistence.user.UserEntity;
 import persistence.userScope.UserScopeEntity;
+import usecases.BindScopeToUserUseCase;
+import usecases.CreateScopeUseCase;
+import usecases.RegisterUserUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BindScopeToUserUseCaseTest {
+public class BindScopeToUserUseCaseIntegrationTest {
 
     private List<UserEntity> userRepository;
     private List<ScopeEntity> scopeRepository;

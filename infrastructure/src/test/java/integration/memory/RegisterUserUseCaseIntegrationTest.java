@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import entity.User;
 import exceptions.ObjectIsNullException;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.password.PasswordEntity;
 import persistence.user.UserEntity;
+import usecases.RegisterUserUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RegisterUserUseCaseTest {
+public class RegisterUserUseCaseIntegrationTest {
 
     private UserGateway userGateway;
     private RegisterUserUseCase registerUserUseCase;

@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import entity.Scope;
 import exceptions.ObjectIsNullException;
@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.scope.ScopeEntity;
+import usecases.CreateScopeUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateScopeUseCaseTest {
+public class CreateScopeUseCaseIntegrationTest {
 
     private CreateScopeUseCase createScopeUseCase;
 

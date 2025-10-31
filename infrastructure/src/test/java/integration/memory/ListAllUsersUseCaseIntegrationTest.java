@@ -1,4 +1,4 @@
-package usecases;
+package integration.memory;
 
 import entity.User;
 import gateway.Memory.UserGatewayMemory;
@@ -7,6 +7,7 @@ import gateway.mappers.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.user.UserEntity;
+import usecases.ListAllUsersUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ListAllUsersUseCaseTest {
+public class ListAllUsersUseCaseIntegrationTest {
 
     private List<UserEntity> userRepository;
     private ListAllUsersUseCase listAllUsersUseCase;

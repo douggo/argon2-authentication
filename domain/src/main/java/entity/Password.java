@@ -68,7 +68,7 @@ public class Password {
         }
 
         private static void validatePassword(String password) throws IllegalArgumentException {
-            if (!Objects.isNull(password)) {
+            if (!Objects.isNull(password) && !password.isBlank()) {
                 return;
             }
             throw new PasswordNotHashedProperlyException("Password isn't hashed properly!");
