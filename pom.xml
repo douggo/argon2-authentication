@@ -11,7 +11,8 @@
 	<groupId>com.douggo</groupId>
 	<artifactId>login</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>login</name>
+    <packaging>pom</packaging>
+    <name>login</name>
 	<description>User&apos;s authentication with Argon2</description>
 	<url/>
 	<licenses>
@@ -20,7 +21,13 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+    <modules>
+        <module>domain</module>
+        <module>application</module>
+        <module>infrastructure</module>
+        <module>boot</module>
+    </modules>
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
@@ -76,14 +83,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
