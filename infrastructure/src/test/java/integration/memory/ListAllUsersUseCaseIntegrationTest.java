@@ -1,13 +1,13 @@
 package integration.memory;
 
-import entity.User;
-import gateway.Memory.UserGatewayMemory;
-import gateway.UserGateway;
-import gateway.mappers.UserMapper;
+import com.douggo.login.domain.entity.User;
+import com.douggo.login.infrastructure.gateway.Memory.UserGatewayMemory;
+import com.douggo.login.application.gateway.UserGateway;
+import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import persistence.user.UserEntity;
-import usecases.ListAllUsersUseCase;
+import com.douggo.login.infrastructure.persistence.user.UserEntity;
+import com.douggo.login.application.usecases.ListAllUsersUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,8 +1,9 @@
 package entity;
 
-import exceptions.UserDateOfBirthNotInformedProperlyException;
-import exceptions.UserEmailNotInformedProperlyException;
-import exceptions.UserNameNotInformedException;
+import com.douggo.login.domain.entity.User;
+import com.douggo.login.domain.exceptions.UserDateOfBirthNotInformedProperlyException;
+import com.douggo.login.domain.exceptions.UserEmailNotInformedProperlyException;
+import com.douggo.login.domain.exceptions.UserNameNotInformedException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

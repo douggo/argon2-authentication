@@ -1,7 +1,8 @@
 package entity;
 
-import exceptions.ScopeIdNotInformedException;
-import exceptions.ScopeNameNotInformedException;
+import com.douggo.login.domain.entity.Scope;
+import com.douggo.login.domain.exceptions.ScopeIdNotInformedException;
+import com.douggo.login.domain.exceptions.ScopeNameNotInformedException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

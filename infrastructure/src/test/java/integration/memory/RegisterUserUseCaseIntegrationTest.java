@@ -1,20 +1,20 @@
 package integration.memory;
 
-import entity.User;
-import exceptions.ObjectIsNullException;
-import gateway.Argon2.PasswordEncryptionGatewayArgon2;
-import gateway.Memory.PasswordGatewayMemory;
-import gateway.Memory.UserGatewayMemory;
-import gateway.PasswordEncryptionGateway;
-import gateway.PasswordGateway;
-import gateway.UserGateway;
-import gateway.mappers.PasswordMapper;
-import gateway.mappers.UserMapper;
+import com.douggo.login.domain.entity.User;
+import com.douggo.login.domain.exceptions.ObjectIsNullException;
+import com.douggo.login.infrastructure.gateway.Argon2.PasswordEncryptionGatewayArgon2;
+import com.douggo.login.infrastructure.gateway.Memory.PasswordGatewayMemory;
+import com.douggo.login.infrastructure.gateway.Memory.UserGatewayMemory;
+import com.douggo.login.application.gateway.PasswordEncryptionGateway;
+import com.douggo.login.application.gateway.PasswordGateway;
+import com.douggo.login.application.gateway.UserGateway;
+import com.douggo.login.infrastructure.gateway.mappers.PasswordMapper;
+import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import persistence.password.PasswordEntity;
-import persistence.user.UserEntity;
-import usecases.RegisterUserUseCase;
+import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
+import com.douggo.login.infrastructure.persistence.user.UserEntity;
+import com.douggo.login.application.usecases.RegisterUserUseCase;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

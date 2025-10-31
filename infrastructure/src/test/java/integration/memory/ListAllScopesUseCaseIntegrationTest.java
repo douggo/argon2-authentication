@@ -1,14 +1,14 @@
 package integration.memory;
 
-import entity.Scope;
-import gateway.Memory.ScopeGatewayMemory;
-import gateway.ScopeGateway;
-import gateway.mappers.ScopeMapper;
+import com.douggo.login.domain.entity.Scope;
+import com.douggo.login.infrastructure.gateway.Memory.ScopeGatewayMemory;
+import com.douggo.login.application.gateway.ScopeGateway;
+import com.douggo.login.infrastructure.gateway.mappers.ScopeMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import persistence.scope.ScopeEntity;
-import usecases.ListAllScopesUseCase;
+import com.douggo.login.infrastructure.persistence.scope.ScopeEntity;
+import com.douggo.login.application.usecases.ListAllScopesUseCase;
 
 import java.util.ArrayList;
 import java.util.List;

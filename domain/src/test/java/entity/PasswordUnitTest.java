@@ -1,7 +1,8 @@
 package entity;
 
-import exceptions.PasswordCreateDateNotInformedException;
-import exceptions.PasswordNotHashedProperlyException;
+import com.douggo.login.domain.entity.Password;
+import com.douggo.login.domain.exceptions.PasswordCreateDateNotInformedException;
+import com.douggo.login.domain.exceptions.PasswordNotHashedProperlyException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
