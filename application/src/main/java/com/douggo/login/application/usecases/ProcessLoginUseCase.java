@@ -42,7 +42,7 @@ public class ProcessLoginUseCase {
         } catch(RuntimeException exception) {
             throw new IllegalAccessException("An error occurred while validating user's data");
         }
-        Password password = this.passwordGateway.getUserPassword(user.getId());
+        Password password = this.passwordGateway.getUserLatestPassword(user.getId());
         if (!this.passwordEncryptionGateway.isPasswordValid(password.getPassword(), authDataDto.getPassword())) {
             throw new IllegalAccessException("An error occurred while validating user's data");
         }

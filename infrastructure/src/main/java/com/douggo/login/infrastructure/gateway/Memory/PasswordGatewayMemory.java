@@ -7,6 +7,7 @@ import com.douggo.login.infrastructure.gateway.mappers.PasswordMapper;
 import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class PasswordGatewayMemory implements PasswordGateway {
     }
 
     @Override
-    public Password getUserPassword(UUID userId) throws IllegalAccessException {
+    public Password getUserLatestPassword(UUID userId) throws IllegalAccessException {
         Password password;
         try {
             password = this.repository.stream()
@@ -44,6 +45,16 @@ public class PasswordGatewayMemory implements PasswordGateway {
             throw new IllegalAccessException("An error occurred while validating user's data");
         }
         return password;
+    }
+
+    @Override
+    public void updatePassword(User user, Password password) {
+
+    }
+
+    @Override
+    public List<Password> getAllActivePasswordFromBefore(UUID userId, LocalDateTime before) throws IllegalAccessException {
+        return List.of();
     }
 
 }

@@ -50,4 +50,9 @@ public class UserGatewayMemory implements UserGateway {
         return this.mapper.toDomain(userEntity);
     }
 
+    @Override
+    public User getUserById(UUID id) throws IllegalAccessException {
+        return null;
+    }
+
 }

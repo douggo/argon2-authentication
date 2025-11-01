@@ -1,5 +1,6 @@
 package com.douggo.login.infrastructure.config;
 
+import com.douggo.login.application.usecases.UpdateUserPasswordUseCase;
 import com.douggo.login.infrastructure.gateway.JPA.UserGatewayJPA;
 import com.douggo.login.application.gateway.PasswordGateway;
 import com.douggo.login.application.gateway.UserGateway;
@@ -31,6 +32,11 @@ public class UserConfig {
     @Bean
     UserGatewayJPA createUserGatewayJPA(UserRepository persistenceRepository, UserMapper mapper) {
         return new UserGatewayJPA(persistenceRepository, mapper);
+    }
+
+    @Bean
+    UpdateUserPasswordUseCase createUpdateUserPasswordUseCase(UserGateway userGateway, PasswordGateway passwordGateway) {
+        return new UpdateUserPasswordUseCase(userGateway, passwordGateway);
     }
 
 }

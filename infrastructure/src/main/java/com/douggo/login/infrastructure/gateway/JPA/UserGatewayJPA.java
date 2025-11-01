@@ -9,6 +9,7 @@ import com.douggo.login.infrastructure.persistence.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class UserGatewayJPA implements UserGateway {
 
@@ -47,5 +48,12 @@ public class UserGatewayJPA implements UserGateway {
             throw new IllegalArgumentException("Address already in use!");
         }
         return this.mapper.toDomain(userEntity);
+    }
+
+    @Override
+    public User getUserById(UUID id) throws IllegalAccessException {
+        return this.mapper.toDomain(this.repository.findById(id)
+                .orElseThrow(() -> new IllegalAccessException("An error occurred while validating user's data")));
+
     }
 }

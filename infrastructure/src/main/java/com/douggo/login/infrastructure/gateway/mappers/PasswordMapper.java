@@ -6,6 +6,7 @@ import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordPK;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class PasswordMapper {
@@ -28,4 +29,7 @@ public class PasswordMapper {
         return new PasswordEntity(id, user, password.isActive());
     }
 
+    public Password toDomain(String password) {
+        return Password.of(password, LocalDateTime.now(), Boolean.TRUE);
+    }
 }

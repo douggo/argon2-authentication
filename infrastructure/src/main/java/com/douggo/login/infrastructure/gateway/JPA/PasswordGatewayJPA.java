@@ -8,6 +8,7 @@ import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,22 +24,43 @@ public class PasswordGatewayJPA implements PasswordGateway {
         this.userMapper = userMapper;
     }
 
-    @Override
-    public Password createPassword(User user, Password password) {
-        PasswordEntity passwordEntity = this.mapper.toEntity(password, this.userMapper.toEntity(user));
-        return this.mapper.toDomain(this.repository.save(passwordEntity));
+    private Password persist(User user, Password password) {
+        return this.mapper.toDomain(
+                this.repository.save(this.mapper.toEntity(password, this.userMapper.toEntity(user)))
+        );
     }
 
     @Override
-    public Password getUserPassword(UUID userId) throws IllegalAccessException {
-        List<PasswordEntity> passwords = this.repository.findById_UserId(userId)
+    public Password createPassword(User user, Password password) {
+        return this.persist(user, password);
+    }
+
+    @Override
+    public void updatePassword(User user, Password password) {
+        this.persist(user, password);
+    }
+
+    @Override
+    public Password getUserLatestPassword(UUID userId) throws IllegalAccessException {
+        List<PasswordEntity> passwords = this.repository.findById_UserIdAndActiveTrue(userId)
                 .orElseThrow(() -> new IllegalAccessException("An error occurred while validating user's data"));
+        if (passwords.size() > 1) {
+            throw new IllegalAccessException("An error occurred while validating user's data. Contact Support!");
+        }
         return passwords
                 .stream()
-                .filter(PasswordEntity::isActive)
                 .map(PasswordEntity::toDomain)
                 .toList()
                 .getFirst();
+    }
+
+    @Override
+    public List<Password> getAllActivePasswordFromBefore(UUID userId, LocalDateTime before) throws IllegalAccessException {
+        List<PasswordEntity> passwords = this.repository.findById_UserIdAndActiveTrueAndId_CreatedAtBefore(userId, before)
+                .orElseThrow(() -> new IllegalAccessException("An error occurred while validating user's data"));
+        return passwords.stream()
+                .map(PasswordEntity::toDomain)
+                .toList();
     }
 
 }
