@@ -4,6 +4,7 @@ import com.douggo.login.application.dto.AuthDataDto;
 import com.douggo.login.application.dto.AuthSuccessDto;
 import com.douggo.login.domain.entity.AuthorizationToken;
 import com.douggo.login.domain.entity.Password;
+import com.douggo.login.domain.entity.Session;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.application.gateway.AuthorizationTokenGateway;
 import com.douggo.login.application.gateway.PasswordEncryptionGateway;
@@ -32,7 +33,11 @@ public class ProcessLoginUseCase {
 
     public AuthSuccessDto execute(AuthDataDto authDataDto) throws IllegalAccessException {
         this.validateData(authDataDto);
-        return AuthSuccessDto.of(this.createAuthorizationToken());
+        Session session =  this.sessionGateway.createSession(this.user);
+        return AuthSuccessDto.from(
+                this.authorizationTokenGateway.generateAuthorizationToken(session, this.user),
+                this.refreshTokenGateway.generateRefreshToken(session)
+        );
     }
 
     private void validateData(AuthDataDto authDataDto) throws IllegalAccessException {
@@ -47,10 +52,6 @@ public class ProcessLoginUseCase {
             throw new IllegalAccessException("An error occurred while validating user's data");
         }
         this.user = user;
-    }
-
-    private AuthorizationToken createAuthorizationToken() {
-        return this.authorizationTokenGateway.generateAuthorizationToken(this.user);
     }
 
 }

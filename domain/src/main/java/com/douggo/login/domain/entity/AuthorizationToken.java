@@ -8,32 +8,39 @@ import java.util.UUID;
 public class AuthorizationToken {
 
     private final UUID id;
+    private final Session session;
     private final User user;
     private final LocalDateTime generatedAt;
     private final LocalDateTime expiredAt;
     private List<Scope> scopes;
 
-    private AuthorizationToken(UUID id, User user, LocalDateTime generatedAt, LocalDateTime expiredAt, List<Scope> scopes) {
+    private AuthorizationToken(UUID id, Session session, User user, LocalDateTime generatedAt, LocalDateTime expiredAt, List<Scope> scopes) {
         this.id = id;
+        this.session = session;
         this.user = user;
         this.generatedAt = generatedAt;
         this.expiredAt = expiredAt;
         this.scopes = scopes;
     }
 
-    private AuthorizationToken(UUID id, User user, LocalDateTime generatedAt, LocalDateTime expiredAt) {
+    private AuthorizationToken(UUID id, Session session, User user, LocalDateTime generatedAt, LocalDateTime expiredAt) {
         this.id = id;
+        this.session = session;
         this.user = user;
         this.generatedAt = generatedAt;
         this.expiredAt = expiredAt;
     }
 
-    public static AuthorizationToken of(UUID token, User user, LocalDateTime generatedAt, LocalDateTime expiredAt) {
-        return new AuthorizationToken(token, user, generatedAt, expiredAt);
+    public static AuthorizationToken of(UUID token, Session session, User user, LocalDateTime generatedAt, LocalDateTime expiredAt) {
+        return new AuthorizationToken(token, session, user, generatedAt, expiredAt);
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public Session getSession() {
+        return session;
     }
 
     public User getUser() {
@@ -55,7 +62,8 @@ public class AuthorizationToken {
     @Override
     public String toString() {
         return "AuthorizationToken{" +
-                "token=" + id +
+                "id=" + id +
+                ", session=" + session +
                 ", user=" + user +
                 ", generatedAt=" + generatedAt +
                 ", expiredAt=" + expiredAt +
@@ -65,14 +73,18 @@ public class AuthorizationToken {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthorizationToken that = (AuthorizationToken) o;
-        return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(generatedAt, that.generatedAt) && Objects.equals(expiredAt, that.expiredAt) && Objects.equals(scopes, that.scopes);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(session, that.session) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(generatedAt, that.generatedAt) &&
+                Objects.equals(expiredAt, that.expiredAt) &&
+                Objects.equals(scopes, that.scopes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, generatedAt, expiredAt, scopes);
+        return Objects.hash(id, session, user, generatedAt, expiredAt, scopes);
     }
 }

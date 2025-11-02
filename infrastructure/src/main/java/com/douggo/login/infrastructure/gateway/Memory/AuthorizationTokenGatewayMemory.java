@@ -1,6 +1,7 @@
 package com.douggo.login.infrastructure.gateway.Memory;
 
 import com.douggo.login.domain.entity.AuthorizationToken;
+import com.douggo.login.domain.entity.Session;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.application.gateway.AuthorizationTokenGateway;
 import com.douggo.login.infrastructure.gateway.mappers.AuthorizationTokenMapper;
@@ -33,14 +34,14 @@ public class AuthorizationTokenGatewayMemory implements AuthorizationTokenGatewa
     }
 
     @Override
-    public AuthorizationToken generateAuthorizationToken(User user) {
+    public AuthorizationToken generateAuthorizationToken(Session session, User user) {
         List<UserScopeEntity> userScopes = this.userScopeRepository.stream()
                 .filter(scope -> scope.getUser()
                         .getId()
                         .compareTo(user.getId()) == 0)
                 .toList();
         LocalDateTime now = LocalDateTime.now();
-        AuthorizationTokenEntity tokenCreated = this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), user, now, now.plusMinutes(5)));
+        AuthorizationTokenEntity tokenCreated = this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), session, user, now, now.plusMinutes(5)));
         this.tokenRepository.add(tokenCreated);
         this.tokenScopeRepository.addAll(AuthorizationTokenScopeEntity.fromUserScopes(userScopes, tokenCreated));
         return this.mapper.toDomain(tokenCreated);

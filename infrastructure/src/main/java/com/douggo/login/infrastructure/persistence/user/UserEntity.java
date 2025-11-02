@@ -3,6 +3,7 @@ package com.douggo.login.infrastructure.persistence.user;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenEntity;
 import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
+import com.douggo.login.infrastructure.persistence.session.SessionEntity;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,13 +44,17 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AuthorizationTokenEntity> authorizationTokens = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<SessionEntity> sessions = new ArrayList<>();
+
     public UserEntity() {}
 
     public UserEntity(
             UUID id, String name, String email,
             LocalDate dateOfBirth, LocalDateTime createdAt,
             LocalDateTime updatedAt, List<PasswordEntity> passwords,
-            List<UserScopeEntity> scopes, List<AuthorizationTokenEntity> authorizationTokens
+            List<UserScopeEntity> scopes, List<AuthorizationTokenEntity> authorizationTokens,
+            List<SessionEntity> sessions
     ) {
         this.id = id;
         this.name = name;
@@ -60,6 +65,7 @@ public class UserEntity {
         this.passwords = passwords;
         this.scopes = scopes;
         this.authorizationTokens = authorizationTokens;
+        this.sessions = sessions;
     }
 
     public UserEntity(UUID id, String name, String email, LocalDate dateOfBirth) {
@@ -156,6 +162,14 @@ public class UserEntity {
 
     public void setAuthorizationTokens(List<AuthorizationTokenEntity> authorizationTokens) {
         this.authorizationTokens = authorizationTokens;
+    }
+
+    public List<SessionEntity> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<SessionEntity> sessions) {
+        this.sessions = sessions;
     }
 
     @Override

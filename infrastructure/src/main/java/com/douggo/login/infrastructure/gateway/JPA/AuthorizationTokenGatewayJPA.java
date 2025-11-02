@@ -1,6 +1,7 @@
 package com.douggo.login.infrastructure.gateway.JPA;
 
 import com.douggo.login.domain.entity.AuthorizationToken;
+import com.douggo.login.domain.entity.Session;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.application.gateway.AuthorizationTokenGateway;
 import com.douggo.login.infrastructure.gateway.mappers.AuthorizationTokenMapper;
@@ -36,13 +37,15 @@ public class AuthorizationTokenGatewayJPA implements AuthorizationTokenGateway {
     }
 
     @Override
-    public AuthorizationToken generateAuthorizationToken(User user) {
+    public AuthorizationToken generateAuthorizationToken(Session session, User user) {
         List<UserScopeEntity> userScopes = this.userScopeRepository.findById_UserId(user.getId())
                 .orElseThrow(() -> new DataNotFoundException("User doesn't have any scopes associated!"));
+
         LocalDateTime now = LocalDateTime.now();
         AuthorizationTokenEntity tokenCreated = this.repository.save(
-                this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), user, now, now.plusMinutes(5)))
+                this.mapper.toEntity(AuthorizationToken.of(UUID.randomUUID(), session, user, now, now.plusMinutes(5)))
         );
+
         this.authorizationTokenScopeRepository.saveAll(AuthorizationTokenScopeEntity.fromUserScopes(userScopes, tokenCreated));
 
         return this.mapper.toDomain(tokenCreated);
