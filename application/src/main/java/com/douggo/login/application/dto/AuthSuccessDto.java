@@ -1,6 +1,7 @@
 package com.douggo.login.application.dto;
 
 import com.douggo.login.domain.entity.AuthorizationToken;
+import com.douggo.login.domain.entity.RefreshToken;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

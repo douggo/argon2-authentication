@@ -8,20 +8,20 @@ public class Session {
 
     private final UUID id;
     private final User user;
-    private final LocalDateTime created_at;
-    private final LocalDateTime expires_at;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime expiresAt;
     private final boolean revoked;
 
-    private Session(UUID id, User user, LocalDateTime created_at, LocalDateTime expires_at, boolean revoked) {
+    private Session(UUID id, User user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked) {
         this.id = id;
         this.user = user;
-        this.created_at = created_at;
-        this.expires_at = expires_at;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
         this.revoked = revoked;
     }
 
-    public static Session of (UUID id, User user, LocalDateTime created_at, LocalDateTime expires_at, boolean revoked) {
-        return new Session(id, user, created_at, expires_at, revoked);
+    public static Session of (UUID id, User user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked) {
+        return new Session(id, user, createdAt, expiresAt, revoked);
     }
 
     public UUID getId() {
@@ -32,12 +32,12 @@ public class Session {
         return user;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public LocalDateTime getExpires_at() {
-        return expires_at;
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
     }
 
     public boolean isRevoked() {
@@ -51,12 +51,12 @@ public class Session {
         return revoked == session.revoked &&
                 Objects.equals(id, session.id) &&
                 Objects.equals(user, session.user) &&
-                Objects.equals(created_at, session.created_at) &&
-                Objects.equals(expires_at, session.expires_at);
+                Objects.equals(createdAt, session.createdAt) &&
+                Objects.equals(expiresAt, session.expiresAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, created_at, expires_at, revoked);
+        return Objects.hash(id, user, createdAt, expiresAt, revoked);
     }
 }

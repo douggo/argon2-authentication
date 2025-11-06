@@ -1,7 +1,9 @@
 package com.douggo.login.infrastructure.persistence.authorizationToken;
 
 import com.douggo.login.domain.entity.AuthorizationToken;
+import com.douggo.login.domain.entity.Session;
 import com.douggo.login.domain.entity.User;
+import com.douggo.login.infrastructure.persistence.session.SessionEntity;
 import jakarta.persistence.*;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 
@@ -20,24 +22,29 @@ public class AuthorizationTokenEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", nullable = false)
+    private SessionEntity session;
+
     private LocalDateTime generatedAt;
 
     private LocalDateTime expiredAt;
 
     public AuthorizationTokenEntity() {}
 
-    public AuthorizationTokenEntity(UUID id, UserEntity user, LocalDateTime generatedAt, LocalDateTime expiredAt) {
+    public AuthorizationTokenEntity(UUID id, UserEntity user, SessionEntity session, LocalDateTime generatedAt, LocalDateTime expiredAt) {
         this.id = id;
         this.user = user;
+        this.session = session;
         this.generatedAt = generatedAt;
         this.expiredAt = expiredAt;
     }
 
-    public static AuthorizationTokenEntity of(AuthorizationToken token, User user) {
-        UserEntity userEntity = UserEntity.fromUserDomain(user);
+    public static AuthorizationTokenEntity of(AuthorizationToken token, User user, Session session) {
         return new AuthorizationTokenEntity(
                 token.getId(),
-                userEntity,
+                UserEntity.fromUserDomain(user),
+                SessionEntity.fromDomain(session),
                 token.getGeneratedAt(),
                 token.getExpiredAt()
         );
@@ -46,6 +53,7 @@ public class AuthorizationTokenEntity {
     public static AuthorizationToken toDomain(AuthorizationTokenEntity token) {
         return AuthorizationToken.of(
                 token.getId(),
+                SessionEntity.toDomain(token.getSession()),
                 UserEntity.toDomain(token.getUser()),
                 token.getGeneratedAt(),
                 token.getExpiredAt()
@@ -53,7 +61,7 @@ public class AuthorizationTokenEntity {
     }
 
     public static AuthorizationTokenEntity from(AuthorizationToken tokenDomain) {
-        return AuthorizationTokenEntity.of(tokenDomain, tokenDomain.getUser());
+        return AuthorizationTokenEntity.of(tokenDomain, tokenDomain.getUser(), tokenDomain.getSession());
     }
 
     public UUID getId() {
@@ -70,6 +78,14 @@ public class AuthorizationTokenEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public SessionEntity getSession() {
+        return session;
+    }
+
+    public void setSession(SessionEntity session) {
+        this.session = session;
     }
 
     public LocalDateTime getGeneratedAt() {
