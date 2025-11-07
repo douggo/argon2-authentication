@@ -4,6 +4,7 @@ import com.douggo.login.domain.entity.Session;
 import com.douggo.login.domain.entity.User;
 import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenEntity;
 import com.douggo.login.infrastructure.persistence.refreshToken.RefreshTokenEntity;
+import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -23,9 +24,8 @@ public class SessionEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     private LocalDateTime createdAt;
 
@@ -41,7 +41,7 @@ public class SessionEntity {
 
     public SessionEntity() {}
 
-    public SessionEntity(UUID id, User user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked,
+    public SessionEntity(UUID id, UserEntity user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked,
                          List<AuthorizationTokenEntity> authorizationTokens) {
         this.id = id;
         this.user = user;
@@ -51,7 +51,7 @@ public class SessionEntity {
         this.authorizationTokens = authorizationTokens;
     }
 
-    public SessionEntity(UUID id, User user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked) {
+    public SessionEntity(UUID id, UserEntity user, LocalDateTime createdAt, LocalDateTime expiresAt, boolean revoked) {
         this.id = id;
         this.user = user;
         this.createdAt = createdAt;
@@ -62,7 +62,7 @@ public class SessionEntity {
     public static SessionEntity fromDomain(Session session) {
         return new SessionEntity(
                 session.getId(),
-                session.getUser(),
+                UserEntity.fromUserDomain(session.getUser()),
                 session.getCreatedAt(),
                 session.getExpiresAt(),
                 session.isRevoked()
@@ -72,7 +72,7 @@ public class SessionEntity {
     public static Session toDomain(SessionEntity entity) {
         return Session.of(
                 entity.getId(),
-                entity.getUser(),
+                UserEntity.toDomain(entity.getUser()),
                 entity.getCreatedAt(),
                 entity.getExpiresAt(),
                 entity.isRevoked()
@@ -87,11 +87,11 @@ public class SessionEntity {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 

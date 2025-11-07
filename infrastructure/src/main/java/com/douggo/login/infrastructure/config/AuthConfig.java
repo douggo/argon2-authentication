@@ -2,13 +2,11 @@ package com.douggo.login.infrastructure.config;
 
 import com.douggo.login.application.gateway.*;
 import com.douggo.login.application.usecases.*;
-import com.douggo.login.infrastructure.gateway.JPA.AuthorizationTokenGatewayJPA;
-import com.douggo.login.infrastructure.gateway.JPA.AuthorizationTokenScopeGatewayJPA;
-import com.douggo.login.infrastructure.gateway.JPA.ScopeGatewayJPA;
-import com.douggo.login.infrastructure.gateway.JPA.UserScopeGatewayJPA;
-import com.douggo.login.infrastructure.gateway.mappers.AuthorizationTokenMapper;
-import com.douggo.login.infrastructure.gateway.mappers.ScopeMapper;
-import com.douggo.login.infrastructure.gateway.mappers.UserScopeMapper;
+import com.douggo.login.domain.entity.RefreshToken;
+import com.douggo.login.infrastructure.gateway.JPA.*;
+import com.douggo.login.infrastructure.gateway.mappers.*;
+import com.douggo.login.infrastructure.persistence.refreshToken.RefreshTokenRepository;
+import com.douggo.login.infrastructure.persistence.session.SessionRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.douggo.login.infrastructure.persistence.authorizationToken.AuthorizationTokenRepository;
@@ -32,6 +30,16 @@ public class AuthConfig {
     @Bean
     UserScopeMapper createUserScopeMapper() {
         return new UserScopeMapper();
+    }
+
+    @Bean
+    SessionMapper createSessionMapper() {
+        return new SessionMapper();
+    }
+
+    @Bean
+    RefreshTokenMapper createRefreshTokenMapper() {
+        return new RefreshTokenMapper();
     }
 
     @Bean
@@ -65,13 +73,32 @@ public class AuthConfig {
     }
 
     @Bean
+    SessionGatewayJPA createSessionGatewayJPA(SessionRepository repository, SessionMapper mapper) {
+        return new SessionGatewayJPA(repository, mapper);
+    }
+
+    @Bean
+    RefreshTokenGatewayJPA createRefreshTokenGatewayJPA(RefreshTokenRepository repository, RefreshTokenMapper mapper) {
+        return new RefreshTokenGatewayJPA(repository, mapper);
+    }
+
+    @Bean
     ProcessLoginUseCase createProcessLoginUseCase(
             UserGateway userGateway,
             PasswordGateway passwordGateway,
             PasswordEncryptionGateway passwordEncryptionGateway,
-            AuthorizationTokenGateway authorizationTokenGateway
+            AuthorizationTokenGateway authorizationTokenGateway,
+            SessionGateway sessionGateway,
+            RefreshTokenGateway refreshTokenGateway
     ) {
-        return new ProcessLoginUseCase(userGateway, passwordGateway, passwordEncryptionGateway, authorizationTokenGateway);
+        return new ProcessLoginUseCase(
+                userGateway,
+                passwordGateway,
+                passwordEncryptionGateway,
+                authorizationTokenGateway,
+                sessionGateway,
+                refreshTokenGateway
+        );
     }
 
     @Bean

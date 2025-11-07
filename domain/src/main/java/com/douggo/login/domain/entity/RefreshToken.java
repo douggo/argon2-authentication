@@ -44,6 +44,11 @@ public class RefreshToken {
         return revoked;
     }
 
+    public static RefreshToken of(UUID id, Session session, LocalDateTime expiresAt, boolean used, boolean revoked) {
+        return new RefreshToken(id, session, expiresAt, used, revoked);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -28,6 +28,10 @@ public class AuthSuccessDto {
         return token;
     }
 
+    public UUID getRefreshToken() {
+        return refreshToken;
+    }
+
     public LocalDateTime getTimeToExpire() {
         return timeToExpire;
     }

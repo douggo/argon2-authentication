@@ -78,6 +78,26 @@ public class RefreshTokenEntity {
         this.revoked = revoked;
     }
 
+    public static RefreshToken toDomain(RefreshTokenEntity entity) {
+        return RefreshToken.of(
+                entity.getId(),
+                SessionEntity.toDomain(entity.getSession()),
+                entity.getExpiresAt(),
+                entity.isUsed(),
+                entity.isRevoked()
+        );
+    }
+
+    public static RefreshTokenEntity toEntity(RefreshToken domain) {
+        return new RefreshTokenEntity(
+                domain.getId(),
+                SessionEntity.fromDomain(domain.getSession()),
+                domain.getExpiresAt(),
+                domain.isUsed(),
+                domain.isRevoked()
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
