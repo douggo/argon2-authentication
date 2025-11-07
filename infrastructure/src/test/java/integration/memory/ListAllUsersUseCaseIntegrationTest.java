@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.application.usecases.ListAllUsersUseCase;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +44,7 @@ public class ListAllUsersUseCaseIntegrationTest {
     public void setup() {
         this.userRepository = new ArrayList<>();
         UserMapper userMapper = new UserMapper();
-        UserGateway userGateway = new UserGatewayMemory(userMapper, userRepository);
+        UserGateway userGateway = new UserGatewayMemory(userMapper, userRepository, Clock.system(ZoneId.of("America/Sao_Paulo")));
         this.listAllUsersUseCase = new ListAllUsersUseCase(userGateway);
     }
 

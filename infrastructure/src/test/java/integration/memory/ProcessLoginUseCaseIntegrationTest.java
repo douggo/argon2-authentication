@@ -25,7 +25,9 @@ import com.douggo.login.application.usecases.CreateScopeUseCase;
 import com.douggo.login.application.usecases.ProcessLoginUseCase;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,7 +64,7 @@ public class ProcessLoginUseCaseIntegrationTest {
     private void registerUser() {
         this.userRepository = new ArrayList<>();
         this.passwordRepository = new ArrayList<>();
-        this.userGateway = new UserGatewayMemory(this.userMapper, this.userRepository);
+        this.userGateway = new UserGatewayMemory(this.userMapper, this.userRepository, Clock.system(ZoneId.of("America/Sao_Paulo"));
         this.passwordEncryptionGateway = new PasswordEncryptionGatewayArgon2();
         this.passwordGateway = new PasswordGatewayMemory(this.passwordMapper, this.userMapper, passwordRepository);
 

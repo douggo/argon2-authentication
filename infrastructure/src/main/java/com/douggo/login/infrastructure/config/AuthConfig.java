@@ -14,6 +14,8 @@ import com.douggo.login.infrastructure.persistence.scope.ScopeRepository;
 import com.douggo.login.infrastructure.persistence.tokenScope.AuthorizationTokenScopeRepository;
 import com.douggo.login.infrastructure.persistence.userScope.UserScopeRepository;
 
+import java.time.Clock;
+
 @Configuration
 public class AuthConfig {
 
@@ -47,13 +49,15 @@ public class AuthConfig {
             AuthorizationTokenRepository authorizationTokenRepository,
             UserScopeRepository userScopeRepository,
             AuthorizationTokenScopeRepository authorizationTokenScopeRepository,
-            AuthorizationTokenMapper authorizationTokenMapper
+            AuthorizationTokenMapper authorizationTokenMapper,
+            Clock clock
     ) {
         return new AuthorizationTokenGatewayJPA(
                 authorizationTokenRepository,
                 userScopeRepository,
                 authorizationTokenScopeRepository,
-                authorizationTokenMapper
+                authorizationTokenMapper,
+                clock
         );
     }
 
@@ -73,13 +77,13 @@ public class AuthConfig {
     }
 
     @Bean
-    SessionGatewayJPA createSessionGatewayJPA(SessionRepository repository, SessionMapper mapper) {
-        return new SessionGatewayJPA(repository, mapper);
+    SessionGatewayJPA createSessionGatewayJPA(SessionRepository repository, SessionMapper mapper, Clock clock) {
+        return new SessionGatewayJPA(repository, mapper, clock);
     }
 
     @Bean
-    RefreshTokenGatewayJPA createRefreshTokenGatewayJPA(RefreshTokenRepository repository, RefreshTokenMapper mapper) {
-        return new RefreshTokenGatewayJPA(repository, mapper);
+    RefreshTokenGatewayJPA createRefreshTokenGatewayJPA(RefreshTokenRepository repository, RefreshTokenMapper mapper, Clock clock) {
+        return new RefreshTokenGatewayJPA(repository, mapper, clock);
     }
 
     @Bean
@@ -119,6 +123,15 @@ public class AuthConfig {
     @Bean
     ListAllUserScopesUseCase createListAllUserScopesUseCase(UserScopeGateway userScopeGateway) {
         return new ListAllUserScopesUseCase(userScopeGateway);
+    }
+
+    @Bean
+    RefreshAuthenticationUseCase createRefreshAuthenticationUseCase(
+            AuthorizationTokenGateway authorizationTokenGateway,
+            RefreshTokenGateway refreshTokenGateway,
+            Clock clock
+    ) {
+        return new RefreshAuthenticationUseCase(authorizationTokenGateway, refreshTokenGateway, clock);
     }
 
 }

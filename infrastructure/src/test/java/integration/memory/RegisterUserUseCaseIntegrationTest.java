@@ -16,7 +16,9 @@ import com.douggo.login.infrastructure.persistence.password.PasswordEntity;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class RegisterUserUseCaseIntegrationTest {
     public void setup() {
         List<UserEntity> userRepository = new ArrayList<>();
         UserMapper userMapper = new UserMapper();
-        this.userGateway = new UserGatewayMemory(userMapper, userRepository);
+        this.userGateway = new UserGatewayMemory(userMapper, userRepository, Clock.system(ZoneId.of("America/Sao_Paulo")));
 
         List<PasswordEntity> passwordRepository = new ArrayList<>();
         PasswordMapper passwordMapper = new PasswordMapper();

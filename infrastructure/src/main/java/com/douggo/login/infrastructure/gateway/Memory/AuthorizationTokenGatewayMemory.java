@@ -48,6 +48,11 @@ public class AuthorizationTokenGatewayMemory implements AuthorizationTokenGatewa
     }
 
     @Override
+    public AuthorizationToken getTokenFrom(UUID authToken) {
+        return null;
+    }
+
+    @Override
     public boolean isTokenExpired(String token) {
          AuthorizationTokenEntity tokenFound = this.tokenRepository.stream()
                 .filter(tokenEntity -> tokenEntity.getId().compareTo(UUID.fromString(token)) == 0)

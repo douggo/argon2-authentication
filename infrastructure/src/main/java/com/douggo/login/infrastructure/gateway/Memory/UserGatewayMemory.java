@@ -6,6 +6,7 @@ import com.douggo.login.infrastructure.gateway.mappers.UserMapper;
 import com.douggo.login.infrastructure.persistence.user.UserEntity;
 import com.douggo.login.infrastructure.security.exceptions.DataNotFoundException;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -14,10 +15,12 @@ public class UserGatewayMemory implements UserGateway {
 
     private final UserMapper mapper;
     private final List<UserEntity> repository;
+    private final Clock clock;
 
-    public UserGatewayMemory(UserMapper mapper, List<UserEntity> repository) {
+    public UserGatewayMemory(UserMapper mapper, List<UserEntity> repository, Clock clock) {
         this.mapper = mapper;
         this.repository = repository;
+        this.clock = clock;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class UserGatewayMemory implements UserGateway {
         if (this.repository.stream().anyMatch(userEntity -> userEntity.getEmail().equalsIgnoreCase(user.getEmail()))) {
             throw new IllegalArgumentException("Address already in use!");
         }
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(this.clock);
         UserEntity userEntity = this.mapper.toEntity(user);
         userEntity.setCreatedAt(now);
         userEntity.setUpdatedAt(now);

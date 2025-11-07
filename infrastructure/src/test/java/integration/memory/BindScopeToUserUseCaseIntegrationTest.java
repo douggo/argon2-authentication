@@ -22,7 +22,9 @@ import com.douggo.login.application.usecases.BindScopeToUserUseCase;
 import com.douggo.login.application.usecases.CreateScopeUseCase;
 import com.douggo.login.application.usecases.RegisterUserUseCase;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -50,7 +52,7 @@ public class BindScopeToUserUseCaseIntegrationTest {
         this.userRepository = new ArrayList<>();
         List<PasswordEntity> passwordRepository = new ArrayList<>();
         new RegisterUserUseCase(
-                new UserGatewayMemory(new UserMapper(), this.userRepository),
+                new UserGatewayMemory(new UserMapper(), this.userRepository, Clock.system(ZoneId.of("America/Sao_Paulo"))),
                 new PasswordGatewayMemory(new PasswordMapper(), new UserMapper(), passwordRepository)
         ).execute(
                 new User.Builder()
